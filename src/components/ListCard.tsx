@@ -4,9 +4,10 @@ import { FaRegCircle } from "react-icons/fa";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { BsTextLeft } from "react-icons/bs";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import AddNew from "./AddNew";
+import CardModal from "./CardModal";
 interface ListCardProps {
   listName: string;
   items: Item[];
@@ -25,8 +26,29 @@ export default function ListCard({
   const [addNew, setAddNew] = useState(false);
   const [menu, setMenu] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [cName, setCname] = useState("");
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutSide = (e: MouseEvent) => {
+      if (divRef.current && !divRef.current.contains(e.target as Node)) {
+        setMenu(false);
+        setAddNew(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutSide);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutSide);
+    };
+  }, []);
   const handleAddItem = () => {
     setAddNew(!addNew);
+  };
+
+  const handleShowModal = (cdName: string) => {
+    setCname(cdName);
+    setShowModal(true);
   };
 
   const handleSubmitItem = (cardName: string) => {
@@ -48,7 +70,10 @@ export default function ListCard({
     deleteList(id);
   };
   return (
-    <div className="space-y-2 flex flex-col bg-cyan-950 p-2 rounded-lg w-72 text-gray-300 flex-shrink-0">
+    <div
+      className="space-y-2 flex flex-col bg-cyan-950 p-2 rounded-lg w-72 text-gray-300 flex-shrink-0"
+      ref={divRef}
+    >
       <div className="flex justify-between relative px-2">
         <label htmlFor="">{listName}</label>
         <button
@@ -78,16 +103,18 @@ export default function ListCard({
       {items.length > 0 ? (
         <div className="flex flex-col space-y-2">
           {items.map((item, index) => (
-            <div key={`item-${index}`} className="bg-[#5b666e] p-2 rounded-lg ">
+            <div
+              key={`item-${index}`}
+              className="bg-[#5b666e] p-2 rounded-lg "
+              onClick={() => handleShowModal(item.cardName)}
+            >
               <div className="flex items-center gap-2">
                 <button>
                   <FaRegCircle />
                 </button>
                 <label>{item.cardName}</label>
               </div>
-              <div>
-                <BsTextLeft />
-              </div>
+              <div>{item.description ? <BsTextLeft /> : ""}</div>
             </div>
           ))}
         </div>
@@ -105,7 +132,10 @@ export default function ListCard({
         <div>
           <button
             className="flex items-center gap-2 text-sm"
-            onClick={handleAddItem}
+            onClick={() => {
+              handleAddItem();
+              setMenu(false);
+            }}
           >
             <span className="">
               <FaPlus />
@@ -113,6 +143,9 @@ export default function ListCard({
             Add a card
           </button>
         </div>
+      )}
+      {showModal && (
+        <CardModal custName={cName} message="test" showModal={setShowModal} />
       )}
     </div>
   );
