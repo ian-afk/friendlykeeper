@@ -7,7 +7,7 @@ function App() {
     <>
       <div className="m-4">
         <Navbar />
-        <div className="mt-18">
+        <div className="mt-24">
           <Body />
         </div>
       </div>
