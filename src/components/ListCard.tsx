@@ -1,13 +1,15 @@
 import { FaPlus } from "react-icons/fa6";
-import { Item, ListType } from "../utils/types";
-import { FaRegCircle } from "react-icons/fa";
+import { Activity, Item, ListType } from "../utils/types";
+
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { BsTextLeft } from "react-icons/bs";
 
 import { useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import AddNew from "./AddNew";
 import CardModal from "./CardModal";
+import { format } from "date-fns";
+
+import Cards from "./Cards";
 interface ListCardProps {
   listName: string;
   items: Item[];
@@ -16,6 +18,12 @@ interface ListCardProps {
   setList: React.Dispatch<React.SetStateAction<ListType[]>>;
 }
 
+type CardInfo = {
+  id: string;
+  cName: string;
+  description: string | undefined | null;
+  activity: Activity[] | [];
+};
 export default function ListCard({
   listName,
   items,
@@ -27,7 +35,13 @@ export default function ListCard({
   const [menu, setMenu] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [cName, setCname] = useState("");
+  const [cardInfo, setCardInfo] = useState<CardInfo>({
+    id: "",
+    cName: "",
+    description: "",
+    activity: [],
+  });
+
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,18 +60,43 @@ export default function ListCard({
     setAddNew(!addNew);
   };
 
-  const handleShowModal = (cdName: string) => {
-    setCname(cdName);
-    setShowModal(true);
+  const handleShowModal = (
+    e: React.MouseEvent<HTMLElement>,
+    cdName: string,
+    id: string,
+    description: string | undefined | null,
+    activity: Activity[] | []
+  ) => {
+    console.log("gotclicked");
+    const target = e.target as HTMLElement | null;
+    console.log(target?.closest("div"));
+    if (target?.closest("div")) {
+      setCardInfo({ cName: cdName, id, description, activity: activity });
+      setShowModal(true);
+    }
   };
 
   const handleSubmitItem = (cardName: string) => {
+    const date = new Date();
     setList((prev) =>
       prev.map((list) =>
         list.id === id
           ? {
               ...list,
-              items: [...list.items, { cardName, id: crypto.randomUUID() }],
+              items: [
+                ...list.items,
+                {
+                  cardName,
+                  id: crypto.randomUUID(),
+                  activity: [
+                    {
+                      id: crypto.randomUUID(),
+                      comment: `added this task to ${list.listName}`,
+                      date: format(date, "MMM dd, yyyy - hh:mm:ss a"),
+                    },
+                  ],
+                },
+              ],
             }
           : list
       )
@@ -103,25 +142,20 @@ export default function ListCard({
       {items.length > 0 ? (
         <div className="flex flex-col space-y-2">
           {items.map((item, index) => (
-            <div
-              key={`item-${index}`}
-              className="bg-[#5b666e] p-2 rounded-lg "
-              onClick={() => handleShowModal(item.cardName)}
-            >
-              <div className="flex items-center gap-2">
-                <button>
-                  <FaRegCircle />
-                </button>
-                <label>{item.cardName}</label>
-              </div>
-              <div>{item.description ? <BsTextLeft /> : ""}</div>
-            </div>
+            <Cards
+              setList={setList}
+              showModal={handleShowModal}
+              cardName={item.cardName}
+              id={item.id}
+              desc={item.description}
+              activity={item.activity}
+            />
           ))}
         </div>
       ) : (
         <></>
       )}
-      {/* {addNew && <List addNew, handleClickAdd/>} */}
+
       {addNew ? (
         <AddNew
           handleClickAdd={handleAddItem}
@@ -145,7 +179,15 @@ export default function ListCard({
         </div>
       )}
       {showModal && (
-        <CardModal custName={cName} message="test" showModal={setShowModal} />
+        <CardModal
+          custName={cardInfo.cName}
+          id={cardInfo.id}
+          showModal={setShowModal}
+          setList={setList}
+          desc={cardInfo.description}
+          setCardInfo={setCardInfo}
+          activity={cardInfo.activity}
+        />
       )}
     </div>
   );
