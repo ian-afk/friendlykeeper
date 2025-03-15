@@ -1,22 +1,16 @@
-import { FaPlus } from "react-icons/fa6";
-import { Activity, Item, ListType } from "../utils/types";
-
-import { HiOutlineDotsVertical } from "react-icons/hi";
+import { Activity, ListType } from "../../types/types";
 
 import { useEffect, useRef, useState } from "react";
-import { IoMdClose } from "react-icons/io";
-import AddNew from "./AddNew";
-import CardModal from "./CardModal";
+
+import AddNewForm from "../../components/AddNewForm";
 import { format } from "date-fns";
 
-import Cards from "./Cards";
-interface ListCardProps {
-  listName: string;
-  items: Item[];
-  id: string;
-  deleteList: (id: string) => void;
-  setList: React.Dispatch<React.SetStateAction<ListType[]>>;
-}
+import Actions from "./components/Actions";
+import { useList } from "../../context/CoreContext";
+import Workstream from "../workstreams/Workstream";
+import ButtonMenu from "./components/ButtonMenu";
+import ButtonAdd from "./components/ButtonAdd";
+import ActionItem from "../actionItems/ActionItem";
 
 type CardInfo = {
   id: string;
@@ -24,13 +18,8 @@ type CardInfo = {
   description: string | undefined | null;
   activity: Activity[] | [];
 };
-export default function ListCard({
-  listName,
-  items,
-  id,
-  deleteList,
-  setList,
-}: ListCardProps) {
+export default function Blueprint({ listName, items, id }: ListType) {
+  const { handleDeleteListCard, setList } = useList();
   const [addNew, setAddNew] = useState(false);
   const [menu, setMenu] = useState(false);
 
@@ -67,9 +56,7 @@ export default function ListCard({
     description: string | undefined | null,
     activity: Activity[] | []
   ) => {
-    console.log("gotclicked");
     const target = e.target as HTMLElement | null;
-    console.log(target?.closest("div"));
     if (target?.closest("div")) {
       setCardInfo({ cName: cdName, id, description, activity: activity });
       setShowModal(true);
@@ -105,9 +92,12 @@ export default function ListCard({
   const handleShowMenu = () => {
     setMenu(!menu);
   };
-  const handleDeleteList = (id: string) => {
-    deleteList(id);
+
+  const handleAddWorkstream = () => {
+    handleAddItem();
+    setMenu(false);
   };
+
   return (
     <div
       className="space-y-2 flex flex-col bg-cyan-950 p-2 rounded-lg w-72 text-gray-300 flex-shrink-0"
@@ -115,35 +105,20 @@ export default function ListCard({
     >
       <div className="flex justify-between relative px-2">
         <label htmlFor="">{listName}</label>
-        <button
-          onClick={handleShowMenu}
-          className={`${menu ? " bg-white text-black rounded-md" : ""}`}
-        >
-          <HiOutlineDotsVertical />
-        </button>
+        <ButtonMenu showMenu={handleShowMenu} menu={menu} />
         {menu && (
-          <div className="absolute -right-66 top-8 bg-[#5b666e] p-2 rounded-lg border-1 border-gray-500 flex flex-col w-72">
-            <div className="relative text-center">
-              <p className="font-semibold">List of actions</p>
-              <button
-                className={`absolute top-0 right-0 $`}
-                onClick={handleShowMenu}
-              >
-                <IoMdClose />
-              </button>
-            </div>
-            <ul className="self-start">
-              <li>Move</li>
-              <li onClick={() => handleDeleteList(id)}>Delete</li>
-            </ul>
-          </div>
+          <Actions
+            deleteListCard={handleDeleteListCard}
+            id={id}
+            showMenu={handleShowMenu}
+          />
         )}
       </div>
       {items.length > 0 ? (
         <div className="flex flex-col space-y-2">
-          {items.map((item, index) => (
-            <Cards
-              setList={setList}
+          {items.map((item, _) => (
+            <Workstream
+              key={item.id}
               showModal={handleShowModal}
               cardName={item.cardName}
               id={item.id}
@@ -157,33 +132,19 @@ export default function ListCard({
       )}
 
       {addNew ? (
-        <AddNew
+        <AddNewForm
           handleClickAdd={handleAddItem}
           button="a card"
           addNew={handleSubmitItem}
         />
       ) : (
-        <div>
-          <button
-            className="flex items-center gap-2 text-sm"
-            onClick={() => {
-              handleAddItem();
-              setMenu(false);
-            }}
-          >
-            <span className="">
-              <FaPlus />
-            </span>
-            Add a card
-          </button>
-        </div>
+        <ButtonAdd addWstream={handleAddWorkstream} />
       )}
       {showModal && (
-        <CardModal
+        <ActionItem
           custName={cardInfo.cName}
           id={cardInfo.id}
           showModal={setShowModal}
-          setList={setList}
           desc={cardInfo.description}
           setCardInfo={setCardInfo}
           activity={cardInfo.activity}

@@ -1,32 +1,20 @@
-import { SetStateAction, useState } from "react";
-import { Activity, ListType } from "../utils/types";
+import { useState } from "react";
+
 import { FaRegCircle } from "react-icons/fa";
 import { BsActivity, BsTextLeft } from "react-icons/bs";
-import { BiEdit } from "react-icons/bi";
-import CardEditModal from "./CardEditModal";
-interface CardsProp {
-  showModal: (
-    e: React.MouseEvent<HTMLElement>,
-    cdName: string,
-    id: string,
-    description: string | undefined | null,
-    activity: Activity[] | []
-  ) => void;
-  cardName: string;
-  id: string;
-  desc: string | null | undefined;
-  activity: Activity[] | [];
-  setList: React.Dispatch<SetStateAction<ListType[]>>;
-}
+import CardEditModal from "./WorkstreamModal";
+import { useList } from "../../context/CoreContext";
+import ButtonEdit from "./components/ButtonEdit";
+import { WorkstreamProps } from "./types/type";
 
-export default function Cards({
+export default function Workstream({
   showModal,
   cardName,
   id,
   desc,
   activity,
-  setList,
-}: CardsProp) {
+}: WorkstreamProps) {
+  const { setList } = useList();
   const [showEdit, setShowEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const activities = activity ? activity.length - 1 : 0;
@@ -61,16 +49,9 @@ export default function Cards({
       onMouseLeave={() => setShowEdit(false)}
       onClick={handleOpenTask}
     >
-      {showEdit ? (
-        <div className="absolute top-2 right-2">
-          <button className="hover:cursor-pointer" onClick={handleEdit}>
-            <BiEdit />
-          </button>
-        </div>
-      ) : (
-        <></>
-      )}
+      {showEdit ? <ButtonEdit edit={handleEdit} /> : <></>}
 
+      {/* TODO add a functionality of the button to have checkmark if done */}
       <div className="flex items-center gap-2">
         <button>
           <FaRegCircle />
