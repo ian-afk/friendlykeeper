@@ -1,6 +1,6 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Body from "./pages/Body";
+import Board from "./pages/BoardPage";
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <div className="m-4">
         <Navbar />
         <div className="mt-24">
-          <Body />
+          <Board />
         </div>
       </div>
     </>
