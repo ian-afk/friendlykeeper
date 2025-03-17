@@ -20,12 +20,12 @@ export type ListType = {
 };
 
 export type TextAreaProps = {
-  inputValue: string | undefined;
-  addInput: boolean;
-  setAddInput: React.Dispatch<SetStateAction<boolean>>;
-  setInput: React.Dispatch<SetStateAction<string | undefined>>;
-  placeHolder: string;
-  name: string;
+  inputValue: string | undefined; // useState [input, ___]
+  setInput: React.Dispatch<SetStateAction<string | undefined>>; // [___, setInut]
+  addInput: boolean; // to spread the textarea if focused
+  setAddInput: React.Dispatch<SetStateAction<boolean>>; // state function
+  placeHolder?: string;
+  name: string; //text area name
 };
 
 export interface UpdatedActType {

@@ -5,6 +5,8 @@ import { useList } from "../../context/CoreContext";
 import { UpdatedActType } from "../../types/types";
 import { useState } from "react";
 import { ProgressLogProps } from "./types/types";
+import LogFooter from "./components/LogFooter";
+import LogItems from "./components/LogItems";
 
 export default function ProgressLog({
   id,
@@ -12,10 +14,11 @@ export default function ProgressLog({
   activity,
 }: ProgressLogProps) {
   const { setList } = useList();
+  const icon = "STFU";
   const [activityInput, setActivity] = useState<string | undefined>("");
 
   const [addActivity, setAddActivity] = useState(false);
-  const [editComment, setEditComment] = useState(false);
+
   const [editActivity, setEditActivity] = useState(false);
   const handleSaveActivity = () => {
     let updatedActivity: UpdatedActType[] = [];
@@ -33,6 +36,7 @@ export default function ProgressLog({
                 date: format(date, "MMM dd, yyyy - hh:mm:ss a"),
               },
             ];
+            console.log(item);
             updatedActivity = newActivity;
             return {
               ...item,
@@ -101,41 +105,20 @@ export default function ProgressLog({
             .map((item, index, arr) => (
               <div key={item.id} className="flex gap-2 items-start">
                 {index === arr.length - 1 ? (
-                  <div className="flex gap-2 items-start">
-                    <div className="rounded-full bg-gray-500 h-10 w-10 aspect-square flex justify-center items-center">
-                      STFU
-                    </div>
-                    <div className="flex flex-col w-full">
-                      <p className="w-max">{item.comment}</p>
-                      <p>{item.date}</p>
-                    </div>
-                  </div>
+                  <LogFooter
+                    comment={item.comment}
+                    date={item.date}
+                    icon="STFU"
+                  />
                 ) : (
-                  <>
-                    <div className="rounded-full bg-gray-500 h-10 w-10 aspect-square flex justify-center items-center">
-                      STFU
-                    </div>
-                    <div className="flex flex-col w-full">
-                      <p className="w-max">{item.date}</p>
-                      {editComment ? (
-                        <textarea />
-                      ) : (
-                        <div className="bg-gray-600 text-white py-2 px-2 rounded-md w-full">
-                          <p className="text-sm">{item.comment}</p>
-                        </div>
-                      )}
-                      {/* to edit add edit and delete functionality*/}
-                      <div className="space-x-2 flex items-center">
-                        <button onClick={() => setEditComment(!editComment)}>
-                          Edit
-                        </button>
-                        <span>-</span>
-                        <button onClick={() => handleDeleteBacklog(item.id)}>
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </>
+                  <LogItems
+                    comment={item.comment}
+                    date={item.date}
+                    deleteLog={handleDeleteBacklog}
+                    id={item.id}
+                    icon={icon}
+                    setCardInfo={setCardInfo}
+                  />
                 )}
               </div>
             ))

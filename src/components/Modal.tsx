@@ -13,7 +13,7 @@ export default function Modal({ showModal, children }: ModalProps) {
     >
       {/* Modal Content */}
       <div
-        className="bg-[#5b666e] p-6 rounded-lg shadow-lg w-[40rem] h-[80vh] overflow-auto"
+        className="bg-[#5b666e] p-6 rounded-lg shadow-lg w-[50rem] h-[80vh] overflow-visible"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
       >
         {children}

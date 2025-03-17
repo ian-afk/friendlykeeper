@@ -8,6 +8,7 @@ import IconHolder from "./components/IconHolder";
 import ButtonSaveCancel from "./components/ButtonSaveCancel";
 import TextArea from "../../components/forms/TextArea";
 import ProgressLog from "../progressLog/ProgressLog";
+import ActionsMenu from "./components/ActionsMenu";
 
 type ActionItemProps = {
   showModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -64,58 +65,75 @@ export default function ActionItem({
     setEditDesc(false);
   };
 
+  const actions = [
+    {
+      name: "Labels",
+      fn: () => console.log("hello"),
+    },
+  ];
   return (
     <Modal showModal={showModal}>
-      <h2 className="text-2xl font-bold flex items-center gap-2">
-        <button className="text-xl">
-          <FaRegCircle className="text-xl" />
-        </button>
-        <span className="text-[]">{custName}</span>
-      </h2>
-      <div className="flex flex-col gap-2 mt-2">
-        <div className="flex items-center gap-2 justify-between">
-          <IconHolder icon={<BsTextLeft />} title="Description" />
+      <div className="grid grid-cols-10 gap-4">
+        <div className="col-span-8">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <button className="text-xl">
+              <FaRegCircle className="text-xl" />
+            </button>
+            <span className="text-[]">{custName}</span>
+          </h2>
+          <div className="flex flex-col gap-2 mt-2">
+            <div className="flex items-center gap-2 justify-between">
+              <IconHolder icon={<BsTextLeft />} title="Description" />
 
-          {desc && (
-            <div>
-              <button
-                className="bg-gray-600 text-white py-2 px-4 rounded-md"
-                onClick={() => setEditDesc(!editDesc)}
-              >
-                Edit
-              </button>
+              {desc && (
+                <div>
+                  <button
+                    className="bg-gray-600 text-white py-2 px-4 rounded-md"
+                    onClick={() => setEditDesc(!editDesc)}
+                  >
+                    Edit
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-        {/* DESCRIPTION */}
-        <div className="mt-2">
-          {desc && !editDesc ? (
-            <div>
-              <h3>{description}</h3>
+            {/* DESCRIPTION */}
+            <div className="mt-2">
+              {desc && !editDesc ? (
+                <div>
+                  <h3>{description}</h3>
+                </div>
+              ) : (
+                <TextArea
+                  inputValue={description}
+                  addInput={addDesc}
+                  setAddInput={setAddDesc}
+                  setInput={setDescription}
+                  placeHolder="Add a detailed description"
+                  name="description"
+                />
+              )}
+
+              {addDesc && (
+                <ButtonSaveCancel
+                  save={handleSaveDescription}
+                  setAdd={handleCancelDesc}
+                />
+              )}
             </div>
-          ) : (
-            <TextArea
-              inputValue={description}
-              addInput={addDesc}
-              setAddInput={setAddDesc}
-              setInput={setDescription}
-              placeHolder="Add a detailed description"
-              name="description"
-            />
-          )}
+          </div>
+          <div className="flex flex-col gap-2 mt-2">
+            <IconHolder icon={<FaList />} title="Activity" />
 
-          {addDesc && (
-            <ButtonSaveCancel
-              save={handleSaveDescription}
-              setAdd={handleCancelDesc}
+            <ProgressLog
+              activity={activity}
+              id={id}
+              setCardInfo={setCardInfo}
             />
-          )}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col gap-2 mt-2">
-        <IconHolder icon={<FaList />} title="Activity" />
-
-        <ProgressLog activity={activity} id={id} setCardInfo={setCardInfo} />
+        <div className="col-span-2 mt-8">
+          <ActionsMenu />
+        </div>
       </div>
     </Modal>
   );

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Actions from "./components/Actions";
-import ButtonSaveCard from "./components/ButtonSaveCard";
 import WorkstreamActivities from "./WorkstreamActivities";
 import { WorkstreamModalProps } from "./types/type";
+import ButtonSave from "../../components/buttons/ButtonSave";
 
 export default function WorkstreamModal({
   prevTA,
@@ -65,7 +65,7 @@ export default function WorkstreamModal({
               </div>
               <WorkstreamActivities activities={activities} />
             </div>
-            <ButtonSaveCard save={handleSaveCard} cancel={handleEdit} />
+            <ButtonSave save={handleSaveCard} cancel={handleEdit} />
           </div>
           <div>
             <Actions openTask={openTask} />
