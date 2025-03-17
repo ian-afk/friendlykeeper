@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { FaRegCircle } from "react-icons/fa";
 import { BsActivity, BsTextLeft } from "react-icons/bs";
-import CardEditModal from "./WorkstreamModal";
+import WorkstreamModal from "./WorkstreamModal";
 import { useList } from "../../context/CoreContext";
 import ButtonEdit from "./components/ButtonEdit";
 import { WorkstreamProps } from "./types/type";
@@ -89,7 +89,7 @@ export default function Workstream({
       </div>
 
       {edit && (
-        <CardEditModal
+        <WorkstreamModal
           setList={setList}
           prevTA={handleTextareaClick}
           cardName={cardName}

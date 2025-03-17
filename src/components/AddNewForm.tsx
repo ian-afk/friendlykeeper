@@ -32,7 +32,7 @@ export default function AddNewForm({
         ref={textareaRef}
         className="border border-white rounded-md bg-[#5b666e] text-white p-2 resize-none overflow-hidden"
         rows={1} // Minimum row count
-        style={{ minHeight: "40px", maxHeight: "300px" }} // Prevents excessive growth
+        style={{ minHeight: "40px", maxHeight: "300px" }}
         value={itemName}
         onChange={(e) => setItemName(e.target.value)}
       />
