@@ -36,17 +36,16 @@ const ActionModal: React.FC<ActionModalProps> = ({
 
   return (
     <div
-      className="fixed bg-[#64696d] p-4 rounded-lg shadow-xl border-1 border-gray-500 z-50 mt-2 w-[18rem]"
+      className="fixed bg-[#64696d] rounded-lg shadow-xl border-1 border-gray-500 z-50 mt-2 w-[20rem]"
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,
       }}
-      onClick={closeModal}
     >
-      <div className="relative">
+      <div className="relative p-2">
         <h3 className="font-semibold text-center">{acname}</h3>
         <button
-          className="text-white absolute top-0 right-0"
+          className="text-white absolute top-2 right-2"
           onClick={closeModal}
         >
           <IoMdClose />

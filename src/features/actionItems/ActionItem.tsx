@@ -97,6 +97,16 @@ export default function ActionItem({
               )}
             </div>
             {/* DESCRIPTION */}
+            <div>
+              <div>
+                <span>Labels</span>
+                <ul className="flex text-white">
+                  <li className="bg-amber-200 px-2 py-1 rounded-md text-sm">
+                    TEST LABEL
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div className="mt-2">
               {desc && !editDesc ? (
                 <div>
