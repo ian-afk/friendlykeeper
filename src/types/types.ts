@@ -6,10 +6,18 @@ export type Activity = {
   date: string;
 };
 
+export type LabelsType = {
+  id: string;
+  label: string;
+  color: string;
+  show: boolean;
+};
+
 export type Item = {
   cardName: string;
   description?: string | undefined | null;
   id: string;
+  labels: LabelsType[] | [];
   activity: Activity[] | [];
 };
 
@@ -34,9 +42,18 @@ export interface UpdatedActType {
   date: string;
 }
 
+export interface CardInfoType {
+  id: string | undefined;
+  cardName: string;
+  description?: string | undefined | null;
+  activity: Activity[] | [];
+  labels: LabelsType[] | [];
+}
+
 export interface CardInfoProps {
   id: string;
   cName: string;
   description: string | undefined | null;
   activity: Activity[] | [];
+  labels: LabelsType[] | [];
 }

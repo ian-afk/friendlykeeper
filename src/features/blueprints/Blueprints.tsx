@@ -1,4 +1,4 @@
-import { Activity, ListType } from "../../types/types";
+import { Activity, LabelsType, ListType } from "../../types/types";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -17,6 +17,7 @@ type CardInfo = {
   cName: string;
   description: string | undefined | null;
   activity: Activity[] | [];
+  labels: LabelsType[] | [];
 };
 export default function Blueprint({ listName, items, id }: ListType) {
   const { handleDeleteListCard, setList } = useList();
@@ -29,6 +30,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
     cName: "",
     description: "",
     activity: [],
+    labels: [],
   });
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -54,11 +56,18 @@ export default function Blueprint({ listName, items, id }: ListType) {
     cdName: string,
     id: string,
     description: string | undefined | null,
-    activity: Activity[] | []
+    activity: Activity[] | [],
+    labels: LabelsType[] | []
   ) => {
     const target = e.target as HTMLElement | null;
     if (target?.closest("div")) {
-      setCardInfo({ cName: cdName, id, description, activity: activity });
+      setCardInfo({
+        cName: cdName,
+        id,
+        description,
+        activity: activity,
+        labels: labels,
+      });
       setShowModal(true);
     }
   };
@@ -75,6 +84,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
                 {
                   cardName,
                   id: crypto.randomUUID(),
+                  labels: [],
                   activity: [
                     {
                       id: crypto.randomUUID(),
@@ -124,6 +134,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
               id={item.id}
               desc={item.description}
               activity={item.activity}
+              labels={item.labels}
             />
           ))}
         </div>
@@ -140,16 +151,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
       ) : (
         <ButtonAdd addWstream={handleAddWorkstream} />
       )}
-      {showModal && (
-        <ActionItem
-          custName={cardInfo.cName}
-          id={cardInfo.id}
-          showModal={setShowModal}
-          desc={cardInfo.description}
-          setCardInfo={setCardInfo}
-          activity={cardInfo.activity}
-        />
-      )}
+      {showModal && <ActionItem id={cardInfo.id} showModal={setShowModal} />}
     </div>
   );
 }

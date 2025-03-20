@@ -5,7 +5,7 @@ import AddNewForm from "../../../components/AddNewForm";
 import TextArea from "../../../components/forms/TextArea";
 import ButtonSave from "../../../components/buttons/ButtonSave";
 import { useList } from "../../../context/CoreContext";
-import { CardInfoProps } from "../../../types/types";
+import { CardInfoProps, CardInfoType } from "../../../types/types";
 
 interface LogItemsProps {
   date: string;
@@ -13,7 +13,7 @@ interface LogItemsProps {
   deleteLog: (id: string) => void;
   id: string;
   icon: string | React.ReactNode;
-  setCardInfo: React.Dispatch<SetStateAction<CardInfoProps>>;
+  setCardInfo: React.Dispatch<SetStateAction<CardInfoType>>;
 }
 export default function LogItems({
   comment,

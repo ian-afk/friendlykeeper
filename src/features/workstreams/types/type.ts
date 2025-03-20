@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { Activity, ListType } from "../../../types/types";
+import { Activity, LabelsType, ListType } from "../../../types/types";
 
 export interface WorkstreamProps {
   showModal: (
@@ -7,12 +7,14 @@ export interface WorkstreamProps {
     cdName: string,
     id: string,
     description: string | undefined | null,
-    activity: Activity[] | []
+    activity: Activity[] | [],
+    labels: LabelsType[] | []
   ) => void;
   cardName: string;
   id: string;
   desc: string | null | undefined;
   activity: Activity[] | [];
+  labels: LabelsType[] | [];
 }
 
 export interface WorkstreamModalProps {
