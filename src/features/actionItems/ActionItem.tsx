@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
 import { FaList, FaRegCircle } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
-import { Activity, CardInfoProps } from "../../types/types";
+import { Activity, LabelsType } from "../../types/types";
 import Modal from "../../components/Modal";
 import IconHolder from "./components/IconHolder";
 import ButtonSaveCancel from "./components/ButtonSaveCancel";
@@ -12,25 +12,39 @@ import ActionsMenu from "./components/ActionsMenu";
 
 type ActionItemProps = {
   showModal: React.Dispatch<React.SetStateAction<boolean>>;
-  custName: string;
   id: string;
-  desc: string | undefined | null;
-  setCardInfo: React.Dispatch<React.SetStateAction<CardInfoProps>>;
-  activity: Activity[] | [];
 };
 
-export default function ActionItem({
-  showModal,
-  custName,
-  id,
-  desc,
-  setCardInfo,
-  activity,
-}: ActionItemProps) {
-  const { setList } = useList();
+type CardInfoType = {
+  id: string | undefined;
+  cardName: string;
+  description?: string | undefined | null;
+  activity: Activity[] | [];
+  labels: LabelsType[] | [];
+};
+
+export default function ActionItem({ showModal, id }: ActionItemProps) {
+  const { setList, list } = useList();
+  const [cardInfo, setCardInfo] = useState<CardInfoType>({
+    id: "",
+    cardName: "",
+    description: "",
+    activity: [],
+    labels: [],
+  });
+
+  useEffect(() => {
+    const listActivity = list
+      .flatMap((list) => list.items)
+      .find((item) => item.id === id);
+    console.log(listActivity);
+    if (listActivity) {
+      setCardInfo(listActivity);
+    }
+  }, [list]);
 
   const [description, setDescription] = useState<string | undefined>(
-    desc ?? ""
+    cardInfo.description ?? ""
   );
 
   const [addDesc, setAddDesc] = useState(false);
@@ -38,8 +52,8 @@ export default function ActionItem({
   const [editDesc, setEditDesc] = useState(false);
 
   useEffect(() => {
-    setDescription(desc ?? "");
-  }, [desc]);
+    setDescription(cardInfo.description ?? "");
+  }, [cardInfo.description]);
 
   const handleSaveDescription = () => {
     setList((prev) =>
@@ -65,12 +79,6 @@ export default function ActionItem({
     setEditDesc(false);
   };
 
-  const actions = [
-    {
-      name: "Labels",
-      fn: () => console.log("hello"),
-    },
-  ];
   return (
     <Modal showModal={showModal}>
       <div className="grid grid-cols-10 gap-4">
@@ -79,13 +87,36 @@ export default function ActionItem({
             <button className="text-xl">
               <FaRegCircle className="text-xl" />
             </button>
-            <span className="text-[]">{custName}</span>
+            <span className="text-[]">{cardInfo.cardName}</span>
           </h2>
           <div className="flex flex-col gap-2 mt-2">
+            {/* LABELS */}
+            <div className="ml-8 flex flex-wrap">
+              {cardInfo.labels ? (
+                <div>
+                  <span>Labels</span>
+                  <ul className="flex text-white space-x-2 flex-wrap">
+                    {cardInfo.labels
+                      .filter((label) => label.show !== false)
+                      .map((label) => (
+                        <li
+                          key={label.id}
+                          className="px-2 py-1 rounded-md text-sm"
+                          style={{ backgroundColor: label.color }}
+                        >
+                          {label.label}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
             <div className="flex items-center gap-2 justify-between">
               <IconHolder icon={<BsTextLeft />} title="Description" />
 
-              {desc && (
+              {cardInfo.description && (
                 <div>
                   <button
                     className="bg-gray-600 text-white py-2 px-4 rounded-md"
@@ -97,18 +128,9 @@ export default function ActionItem({
               )}
             </div>
             {/* DESCRIPTION */}
-            <div>
-              <div>
-                <span>Labels</span>
-                <ul className="flex text-white">
-                  <li className="bg-amber-200 px-2 py-1 rounded-md text-sm">
-                    TEST LABEL
-                  </li>
-                </ul>
-              </div>
-            </div>
+
             <div className="mt-2">
-              {desc && !editDesc ? (
+              {cardInfo.description && !editDesc ? (
                 <div>
                   <h3>{description}</h3>
                 </div>
@@ -135,14 +157,14 @@ export default function ActionItem({
             <IconHolder icon={<FaList />} title="Activity" />
 
             <ProgressLog
-              activity={activity}
+              activity={cardInfo.activity}
               id={id}
               setCardInfo={setCardInfo}
             />
           </div>
         </div>
         <div className="col-span-2 mt-8">
-          <ActionsMenu itemId={id} />
+          <ActionsMenu itemId={id} labels={cardInfo.labels} />
         </div>
       </div>
     </Modal>

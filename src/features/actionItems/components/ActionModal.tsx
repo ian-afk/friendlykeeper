@@ -42,16 +42,15 @@ const ActionModal: React.FC<ActionModalProps> = ({
         left: `${position.left}px`,
       }}
     >
-      <div className="relative p-2">
-        <h3 className="font-semibold text-center">{acname}</h3>
+      <div className="relative">
         <button
           className="text-white absolute top-2 right-2"
           onClick={closeModal}
         >
           <IoMdClose />
         </button>
+        {children}
       </div>
-      {children}
     </div>
   );
 };

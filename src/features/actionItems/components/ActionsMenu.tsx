@@ -2,13 +2,15 @@ import { useState, useRef } from "react";
 import ActionModal from "./ActionModal";
 import { BiCalendarAlt, BiLabel } from "react-icons/bi";
 import { GoChecklist } from "react-icons/go";
-import Label from "./Label";
+import Label from "./labels/Label";
+import { LabelsType } from "../../../types/types";
 
 type ActionMenuProps = {
   itemId: string;
+  labels: LabelsType[] | [];
 };
 
-const ActionMenu = ({ itemId }: ActionMenuProps) => {
+const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const actionRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
 
@@ -26,7 +28,7 @@ const ActionMenu = ({ itemId }: ActionMenuProps) => {
       icon: <BiLabel />,
       fnc: showActionModal,
       show: showLabel,
-      children: <Label itemId={itemId} />,
+      children: <Label itemId={itemId} labels={labels} />,
     },
     {
       name: "Checklist",
@@ -86,7 +88,7 @@ const ActionMenu = ({ itemId }: ActionMenuProps) => {
         <li
           key={item.name}
           className="bg-[#727a81] px-2 py-1 text-sm rounded-md relative"
-          ref={setRef(item.name)} // ✅ FIXED
+          ref={setRef(item.name)}
         >
           <button
             className="flex gap-1 items-center"

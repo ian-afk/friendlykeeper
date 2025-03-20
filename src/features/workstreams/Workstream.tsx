@@ -13,6 +13,7 @@ export default function Workstream({
   id,
   desc,
   activity,
+  labels,
 }: WorkstreamProps) {
   const { setList } = useList();
   const [showEdit, setShowEdit] = useState(false);
@@ -29,11 +30,11 @@ export default function Workstream({
       e.stopPropagation();
       return;
     }
-    showModal(e, cardName, id, desc, activity);
+    showModal(e, cardName, id, desc, activity, labels);
   };
 
   const handleOpenTask2 = (e: React.MouseEvent<HTMLElement>) => {
-    showModal(e, cardName, id, desc, activity);
+    showModal(e, cardName, id, desc, activity, labels);
     setEdit(false);
     setShowEdit(false);
   };
