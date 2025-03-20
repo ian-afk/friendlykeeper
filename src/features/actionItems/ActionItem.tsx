@@ -142,7 +142,7 @@ export default function ActionItem({
           </div>
         </div>
         <div className="col-span-2 mt-8">
-          <ActionsMenu />
+          <ActionsMenu itemId={id} />
         </div>
       </div>
     </Modal>

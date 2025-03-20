@@ -1,11 +1,13 @@
 import { SetStateAction, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+import { useList } from "../../../context/CoreContext";
 
 interface LabelNewProps {
   setNew: React.Dispatch<SetStateAction<boolean>>;
 }
 
 export default function LabelNew({ setNew }: LabelNewProps) {
+  const { setList } = useList();
   const [color, setColor] = useState("");
   const [title, setTitle] = useState("");
   const colors = [
@@ -28,11 +30,17 @@ export default function LabelNew({ setNew }: LabelNewProps) {
   const handleSetColor = (color: string) => {
     setColor(color);
   };
+  const handleRemoveColor = () => {
+    setColor("");
+  };
 
   return (
     <div>
       <div className="h-20 bg-[#424a50] flex items-center justify-center">
-        <div style={{ backgroundColor: color }} className="px-2 py-1 w-64 h-7">
+        <div
+          style={{ backgroundColor: color }}
+          className="px-3 py-2 w-64 h-10 font-semibold text-white rounded-sm flex items-center"
+        >
           {title}
         </div>
       </div>
@@ -58,7 +66,17 @@ export default function LabelNew({ setNew }: LabelNewProps) {
           ))}
         </ul>
         <div>
-          <button className="bg-[#6b7681] w-full py-1 rounded-sm flex items-center justify-center gap-2">
+          <button
+            className={`w-full py-1 rounded-sm flex items-center justify-center gap-2
+    ${
+      color === ""
+        ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+        : "bg-[#6b7681] hover:bg-[#5a636b] cursor-pointer"
+    }
+  `}
+            disabled={color === ""}
+            onClick={handleRemoveColor}
+          >
             <span className="text-md">
               <IoMdClose />
             </span>

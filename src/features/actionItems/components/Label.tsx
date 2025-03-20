@@ -7,7 +7,11 @@ interface Label {
   label: string;
 }
 
-export default function Label() {
+type LabelProps = {
+  itemId: string;
+};
+
+export default function Label({ itemId }: LabelProps) {
   const { setList } = useList();
   const [labels, setLabels] = useState<Label[]>([]);
   const [newLabel, setNewLabel] = useState(false);
