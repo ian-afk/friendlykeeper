@@ -72,7 +72,7 @@ export default function LabelNew({ setNew, back, itemId }: LabelNewProps) {
           <span>Title</span>
           <input
             type="text"
-            className="border-1 px-2 py-1 rounded-sm"
+            className="border-1 px-2 py-1 rounded-sm focus:outline-none focus:ring-0"
             name="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
