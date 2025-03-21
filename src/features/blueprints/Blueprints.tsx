@@ -113,6 +113,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
       className="space-y-2 flex flex-col bg-cyan-950 p-2 rounded-lg w-72 text-gray-300 flex-shrink-0"
       ref={divRef}
     >
+      {/* LIST or BLUEPRINT HEADER */}
       <div className="flex justify-between relative px-2">
         <label htmlFor="">{listName}</label>
         <ButtonMenu showMenu={handleShowMenu} menu={menu} />
@@ -124,6 +125,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
           />
         )}
       </div>
+      {/* END OF HEADER */}
       {items.length > 0 ? (
         <div className="flex flex-col space-y-2">
           {items.map((item, _) => (

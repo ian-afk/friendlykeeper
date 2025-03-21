@@ -12,17 +12,14 @@ export default function LabelNew({ setNew, back, itemId }: LabelNewProps) {
   const { setList } = useList();
   const [color, setColor] = useState("");
   const [title, setTitle] = useState("");
-  const colors = [
-    "#FF5733", // Red-Orange
-    "#33FF57", // Green
-    "#5733FF", // Blue-Violet
-    "#FFD700", // Gold
-    "#FF33A8", // Pink
-    "#33A8FF", // Sky Blue
-    "#A833FF", // Purple
-    "#FF8C33", // Orange
-    "#33FFD7", // Aqua
-    "#D733FF", // Magenta
+
+  const colorShades = [
+    ["#217C55", "#7D5F06", "#9B3F00", "#842E27", "#4D4093"],
+    ["#2DAC75", "#A57F08", "#C45100", "#AB3D34", "#6555C4"],
+    ["#47D69A", "#D0A00B", "#EF6300", "#D34C42", "#7F6DF7"],
+    ["#09326C", "#164555", "#37471F", "#50253F", "#454F59"],
+    ["#3F6FBA", "#4F8C87", "#7B9142", "#9A5480", "#738293"],
+    ["#7FA6E6", "#7AB7B0", "#B3C675", "#D98CB0", "#AEBBC4"],
   ];
 
   const createNewLabel = () => {
@@ -82,14 +79,16 @@ export default function LabelNew({ setNew, back, itemId }: LabelNewProps) {
           />
         </div>
         <ul className="flex flex-wrap justify-between gap-2">
-          {colors.map((color) => (
-            <li
-              key={color}
-              className="w-12 h-8 rounded-md"
-              style={{ backgroundColor: color }}
-              onClick={() => handleSetColor(color)}
-            ></li>
-          ))}
+          {colorShades.map((color) =>
+            color.map((color) => (
+              <li
+                key={color}
+                className="w-12 h-8 rounded-md"
+                style={{ backgroundColor: color }}
+                onClick={() => handleSetColor(color)}
+              ></li>
+            ))
+          )}
         </ul>
         <div>
           <button

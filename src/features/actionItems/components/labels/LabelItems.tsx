@@ -1,6 +1,7 @@
 import { BsPencil } from "react-icons/bs";
 import { useList } from "../../../../context/CoreContext";
 import { SetStateAction, useState } from "react";
+import { getContrastColor } from "../../../../utils/globalFunc";
 
 type EditLabel = {
   id: string;
@@ -56,7 +57,7 @@ export default function LabelItems({
         onChange={(e) => handleInput(e, id)}
       />
       <div
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: color, color: getContrastColor(color) }}
         className="px-3 w-64 h-8 font-semibold text-white rounded-sm flex items-center"
       >
         <span> {label}</span>
