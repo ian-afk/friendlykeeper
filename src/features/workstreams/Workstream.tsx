@@ -6,6 +6,7 @@ import WorkstreamModal from "./WorkstreamModal";
 import { useList } from "../../context/CoreContext";
 import ButtonEdit from "./components/ButtonEdit";
 import { WorkstreamProps } from "./types/type";
+import { getContrastColor } from "../../utils/globalFunc";
 
 export default function Workstream({
   showModal,
@@ -52,6 +53,24 @@ export default function Workstream({
     >
       {showEdit ? <ButtonEdit edit={handleEdit} /> : <></>}
 
+      <div>
+        <ul className="flex flex-wrap space-x-1 space-y-1">
+          {labels
+            .filter((label) => label.show === true && label.color !== "")
+            .map((label) => (
+              <li
+                key={label.id}
+                style={{
+                  backgroundColor: label.color,
+                  color: getContrastColor(label.color),
+                }}
+                className="rounded-sm px-2 text-sm"
+              >
+                {label.label}
+              </li>
+            ))}
+        </ul>
+      </div>
       {/* TODO add a functionality of the button to have checkmark if done */}
       <div className="flex items-center gap-2">
         <button>

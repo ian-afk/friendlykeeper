@@ -9,6 +9,7 @@ import ButtonSaveCancel from "./components/ButtonSaveCancel";
 import TextArea from "../../components/forms/TextArea";
 import ProgressLog from "../progressLog/ProgressLog";
 import ActionsMenu from "./components/ActionsMenu";
+import { getContrastColor } from "../../utils/globalFunc";
 
 type ActionItemProps = {
   showModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -95,14 +96,17 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
               {cardInfo.labels ? (
                 <div>
                   <span>Labels</span>
-                  <ul className="flex text-white space-x-2 flex-wrap">
+                  <ul className="flex text-white space-x-2 space-y-1 flex-wrap">
                     {cardInfo.labels
                       .filter((label) => label.show !== false)
                       .map((label) => (
                         <li
                           key={label.id}
                           className="px-2 py-1 rounded-md text-sm"
-                          style={{ backgroundColor: label.color }}
+                          style={{
+                            backgroundColor: label.color,
+                            color: getContrastColor(label.color),
+                          }}
                         >
                           {label.label}
                         </li>
