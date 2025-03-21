@@ -1,12 +1,19 @@
 import { BsPencil } from "react-icons/bs";
 import { useList } from "../../../../context/CoreContext";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
+
+type EditLabel = {
+  id: string;
+  label: string;
+  color: string;
+};
 
 interface LabelItemsProps {
   id: string;
   color: string;
   label: string;
   show: boolean;
+  edit: (id: string, label: string, color: string) => void;
 }
 
 export default function LabelItems({
@@ -14,32 +21,13 @@ export default function LabelItems({
   color,
   label,
   show,
+  edit,
 }: LabelItemsProps) {
   const { setList } = useList();
 
   const [check, setCheck] = useState(show);
-  const showLabel = (id: string) => {
-    setList((prev) =>
-      prev.map((list) => ({
-        ...list,
-        items: list.items.map((item) => ({
-          ...item,
-          labels: (item.labels || []).map((label) => {
-            if (label.id === id) {
-              return {
-                ...label,
-                show: check,
-              };
-            }
-            return label;
-          }),
-        })),
-      }))
-    );
-  };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    console.log(id);
     setCheck(e.target.checked);
     setList((prev) =>
       prev.map((list) => ({
@@ -73,7 +61,10 @@ export default function LabelItems({
       >
         <span> {label}</span>
       </div>
-      <button className="hover:cursor-pointer">
+      <button
+        className="hover:cursor-pointer"
+        onClick={() => edit(id, label, color)}
+      >
         <BsPencil />
       </button>
     </li>

@@ -95,7 +95,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
               {cardInfo.labels ? (
                 <div>
                   <span>Labels</span>
-                  <ul className="flex text-white space-x-2 flex-wrap">
+                  <ul className="flex text-white space-x-2 space-y-1 flex-wrap">
                     {cardInfo.labels
                       .filter((label) => label.show !== false)
                       .map((label) => (
