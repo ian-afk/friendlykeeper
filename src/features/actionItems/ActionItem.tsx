@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
 import { FaList, FaRegCircle } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
-import { Activity, LabelsType } from "../../types/types";
+import { Activity, Checklist, LabelsType } from "../../types/types";
 import Modal from "../../components/Modal";
 import IconHolder from "./components/IconHolder";
 import ButtonSaveCancel from "./components/ButtonSaveCancel";
@@ -11,6 +11,7 @@ import ProgressLog from "../progressLog/ProgressLog";
 import ActionsMenu from "./components/ActionsMenu";
 import { getContrastColor } from "../../utils/globalFunc";
 
+import ActionCheckList from "./components/checklist/ActionCheckList";
 type ActionItemProps = {
   showModal: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
@@ -22,6 +23,7 @@ type CardInfoType = {
   description?: string | undefined | null;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
+  checklist: Checklist[] | [];
 };
 
 export default function ActionItem({ showModal, id }: ActionItemProps) {
@@ -32,6 +34,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     description: "",
     activity: [],
     labels: [],
+    checklist: [],
   });
 
   useEffect(() => {
@@ -117,13 +120,14 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
                 <></>
               )}
             </div>
+            {/* DESCRIPTION */}
             <div className="flex items-center gap-2 justify-between">
               <IconHolder icon={<BsTextLeft />} title="Description" />
 
               {cardInfo.description && (
                 <div>
                   <button
-                    className="bg-gray-600 text-white py-2 px-4 rounded-md"
+                    className="bg-gray-600 text-white py-1 px-4 rounded-md"
                     onClick={() => setEditDesc(!editDesc)}
                   >
                     Edit
@@ -131,8 +135,6 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
                 </div>
               )}
             </div>
-            {/* DESCRIPTION */}
-
             <div className="mt-2">
               {cardInfo.description && !editDesc ? (
                 <div>
@@ -154,6 +156,15 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
                   save={handleSaveDescription}
                   setAdd={handleCancelDesc}
                 />
+              )}
+            </div>
+
+            {/* CHECKLIST */}
+            <div className="flex flex-col space-y-2">
+              {cardInfo.checklist ? (
+                <ActionCheckList checklist={cardInfo.checklist} />
+              ) : (
+                <></>
               )}
             </div>
           </div>

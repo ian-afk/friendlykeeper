@@ -1,5 +1,10 @@
 import { SetStateAction } from "react";
-import { Activity, LabelsType, ListType } from "../../../types/types";
+import {
+  Activity,
+  Checklist,
+  LabelsType,
+  ListType,
+} from "../../../types/types";
 
 export interface WorkstreamProps {
   showModal: (
@@ -15,6 +20,7 @@ export interface WorkstreamProps {
   desc: string | null | undefined;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
+  checklist: Checklist[] | [];
 }
 
 export interface WorkstreamModalProps {

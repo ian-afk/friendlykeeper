@@ -85,6 +85,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
                   cardName,
                   id: crypto.randomUUID(),
                   labels: [],
+                  checklist: [],
                   activity: [
                     {
                       id: crypto.randomUUID(),

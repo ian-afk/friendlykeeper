@@ -4,6 +4,7 @@ import { BiCalendarAlt, BiLabel } from "react-icons/bi";
 import { GoChecklist } from "react-icons/go";
 import Label from "./labels/Label";
 import { LabelsType } from "../../../types/types";
+import Checklist from "./checklist/Checklist";
 
 type ActionMenuProps = {
   itemId: string;
@@ -36,7 +37,7 @@ const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
       icon: <GoChecklist />,
       fnc: showActionModal,
       show: showChecklist,
-      children: <></>,
+      children: <Checklist itemId={itemId} closeCl={setActiveAction} />,
     },
     {
       name: "Due Date",
@@ -96,6 +97,7 @@ const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
               setActiveAction(activeAction === item.name ? null : item.name)
             }
           >
+            <span>{item.icon}</span>
             {item.name}
           </button>
 
@@ -103,7 +105,6 @@ const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
             <ActionModal
               parentRef={actionRefs.current[item.name]!}
               closeModal={() => setActiveAction(null)}
-              acname={item.name}
             >
               {item.children}
             </ActionModal>
