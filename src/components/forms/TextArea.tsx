@@ -7,6 +7,7 @@ export default function TextArea({
   setInput,
   name,
   placeHolder,
+  maxRow = 10,
 }: TextAreaProps) {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
@@ -19,7 +20,7 @@ export default function TextArea({
         placeholder={placeHolder}
         id={name}
         value={inputValue}
-        rows={addInput ? 10 : 2}
+        rows={addInput ? maxRow : 2}
         onClick={() => setAddInput(true)}
         onChange={handleChange}
       ></textarea>
