@@ -7,6 +7,7 @@ import { useList } from "../../context/CoreContext";
 import ButtonEdit from "./components/ButtonEdit";
 import { WorkstreamProps } from "./types/type";
 import { getContrastColor } from "../../utils/globalFunc";
+import { LuListTodo } from "react-icons/lu";
 
 export default function Workstream({
   showModal,
@@ -15,11 +16,22 @@ export default function Workstream({
   desc,
   activity,
   labels,
+  checklist,
 }: WorkstreamProps) {
-  const { setList } = useList();
+  const { setList, list } = useList();
   const [showEdit, setShowEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const activities = activity ? activity.length - 1 : 0;
+  const checklists = list.flatMap((list) => ({
+    ...list,
+    items: list.items.map((item) => ({
+      ...item,
+      checklist: item.checklist.map((check) => ({
+        ...check,
+        checklist: check.checklist.filter((check) => check.done === true),
+      })),
+    })),
+  })).length;
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowEdit(false);
@@ -105,6 +117,15 @@ export default function Workstream({
               </span>
             </div>
           </div>
+        )}
+
+        {checklists ? (
+          <div className="flex items-center">
+            <LuListTodo />
+            <span>{checklists}</span>
+          </div>
+        ) : (
+          <></>
         )}
       </div>
 

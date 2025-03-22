@@ -13,12 +13,26 @@ export type LabelsType = {
   show: boolean;
 };
 
+export type ChecklistItem = {
+  id: string;
+  clTitle: string | undefined;
+  dueDate: string;
+  done: boolean;
+};
+
+export type Checklist = {
+  id: string;
+  title: string;
+  checklist: ChecklistItem[] | [];
+};
+
 export type Item = {
   cardName: string;
   description?: string | undefined | null;
   id: string;
   labels: LabelsType[] | [];
   activity: Activity[] | [];
+  checklist: Checklist[] | [];
 };
 
 export type ListType = {
@@ -34,6 +48,7 @@ export type TextAreaProps = {
   setAddInput: React.Dispatch<SetStateAction<boolean>>; // state function
   placeHolder?: string;
   name: string; //text area name
+  maxRow?: number;
 };
 
 export interface UpdatedActType {
@@ -48,6 +63,7 @@ export interface CardInfoType {
   description?: string | undefined | null;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
+  checklist: Checklist[] | [];
 }
 
 export interface CardInfoProps {

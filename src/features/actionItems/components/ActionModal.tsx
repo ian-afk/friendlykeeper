@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 interface ActionModalProps {
-  parentRef: HTMLLIElement | null;
+  parentRef: HTMLLIElement | HTMLDivElement | null;
   closeModal: () => void;
-  acname: string;
   children: React.ReactNode;
 }
 
 const ActionModal: React.FC<ActionModalProps> = ({
   parentRef,
   closeModal,
-  acname,
   children,
 }) => {
   const [position, setPosition] = useState<{
