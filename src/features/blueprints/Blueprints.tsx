@@ -1,4 +1,4 @@
-import { Activity, LabelsType, ListType } from "../../types/types";
+import { Activity, Checklist, LabelsType, ListType } from "../../types/types";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -18,6 +18,7 @@ type CardInfo = {
   description: string | undefined | null;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
+  checklist: Checklist[] | [];
 };
 export default function Blueprint({ listName, items, id }: ListType) {
   const { handleDeleteListCard, setList } = useList();
@@ -31,6 +32,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
     description: "",
     activity: [],
     labels: [],
+    checklist: [],
   });
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,8 @@ export default function Blueprint({ listName, items, id }: ListType) {
     id: string,
     description: string | undefined | null,
     activity: Activity[] | [],
-    labels: LabelsType[] | []
+    labels: LabelsType[] | [],
+    checklist: Checklist[] | []
   ) => {
     const target = e.target as HTMLElement | null;
     if (target?.closest("div")) {
@@ -67,6 +70,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
         description,
         activity: activity,
         labels: labels,
+        checklist: checklist,
       });
       setShowModal(true);
     }
@@ -138,6 +142,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
               desc={item.description}
               activity={item.activity}
               labels={item.labels}
+              checklist={item.checklist}
             />
           ))}
         </div>

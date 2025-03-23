@@ -19,14 +19,14 @@ const ActionModal: React.FC<ActionModalProps> = ({
   useEffect(() => {
     if (parentRef) {
       const rect = parentRef.getBoundingClientRect();
-      console.log("Parent element position:", rect); // 🔥 Debugging log
+      // console.log("Parent element position:", rect); // 🔥 Debugging log
 
       setPosition({
         top: rect.bottom, // Adjust based on needs
         left: rect.left,
       });
     } else {
-      console.warn("ParentRef is null"); // Debug warning
+      // console.warn("ParentRef is null"); // Debug warning
     }
   }, [parentRef]);
 
