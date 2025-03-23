@@ -41,7 +41,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     const listActivity = list
       .flatMap((list) => list.items)
       .find((item) => item.id === id);
-    console.log(listActivity);
+    setCardName(listActivity?.cardName ?? "");
     if (listActivity) {
       setCardInfo(listActivity);
     }
@@ -50,9 +50,9 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
   const [description, setDescription] = useState<string | undefined>(
     cardInfo.description ?? ""
   );
-
+  const [cardName, setCardName] = useState<string>("");
+  const [editBp, setEditBp] = useState(false); // edit blueprint or card name
   const [addDesc, setAddDesc] = useState(false);
-
   const [editDesc, setEditDesc] = useState(false);
 
   useEffect(() => {
@@ -83,16 +83,48 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     setEditDesc(false);
   };
 
+  const handleEditCard = () => {
+    setEditBp(true);
+  };
+
+  const handleSaveCardName = () => {
+    setList((prev) =>
+      prev.map((list) => ({
+        ...list,
+        items: list.items.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                cardName: cardName,
+              }
+            : item
+        ),
+      }))
+    );
+    setEditBp(false);
+  };
   return (
     <Modal showModal={showModal}>
       <div className="grid grid-cols-10 gap-4">
         <div className="col-span-8">
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <button className="text-xl">
               <FaRegCircle className="text-xl" />
             </button>
-            <span className="text-[]">{cardInfo.cardName}</span>
-          </h2>
+            {editBp ? (
+              <input
+                type="text"
+                className="px-2 py-1"
+                value={cardName}
+                onChange={(e) => setCardName(e.target.value)}
+                onBlur={() => handleSaveCardName()}
+              />
+            ) : (
+              <h2 className="text-2xl font-bold" onClick={handleEditCard}>
+                <span className="text-[]">{cardInfo.cardName}</span>
+              </h2>
+            )}
+          </div>
           <div className="flex flex-col gap-2 mt-2">
             {/* LABELS */}
             <div className="ml-8 flex flex-wrap">
@@ -137,7 +169,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
             </div>
             <div className="mt-2">
               {cardInfo.description && !editDesc ? (
-                <div>
+                <div className="flex flex-wrap break-words whitespace-normal">
                   <h3>{description}</h3>
                 </div>
               ) : (

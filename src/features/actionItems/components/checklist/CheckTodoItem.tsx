@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useList } from "../../../../context/CoreContext";
 import TextArea from "../../../../components/forms/TextArea";
 import ButtonSave from "../../../../components/buttons/ButtonSave";
 import { FaRegClock } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { MdDeleteOutline } from "react-icons/md";
+import ActionModal from "../ActionModal";
+
 interface ChehcktodoItemProps {
   done: boolean;
   clTitle: string | undefined;
@@ -20,6 +22,16 @@ export default function CheckTodoItem({
 
   const [edit, setEdit] = useState(false);
   const [faTitle, setfaTitle] = useState(false); //focusAdd todo
+
+  const [activeAction, setActiveAction] = useState<string | null>(null);
+  const actionRefs = useRef<{
+    [key: string]: HTMLLIElement | HTMLDivElement | null;
+  }>({});
+
+  const setRef =
+    (name: string) => (el: HTMLLIElement | HTMLDivElement | null) => {
+      actionRefs.current[name] = el;
+    };
 
   const handleDone = (e: React.ChangeEvent<HTMLInputElement>, id: string) => {
     setList((prev) =>
@@ -66,6 +78,22 @@ export default function CheckTodoItem({
     setEdit(false);
   };
 
+  const handleDelete = (id: string) => {
+    setList((prev) =>
+      prev.map((list) => ({
+        ...list,
+        items: list.items.map((item) => ({
+          ...item,
+          checklist: item.checklist.map((check) => ({
+            ...check,
+            checklist: check.checklist.filter((check) => check.id !== id),
+          })),
+        })),
+      }))
+    );
+    setEdit(false);
+  };
+
   const handleCancel = () => {
     setEdit(false);
   };
@@ -98,15 +126,79 @@ export default function CheckTodoItem({
               {/* <button className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm">
                 Assign
               </button> */}
-              <button className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm flex gap-2 items-center">
-                <span className="font-bold text-lg">
-                  <FaRegClock />
-                </span>{" "}
-                Due date
-              </button>
-              <button className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm">
+              <div ref={setRef(`due-${id}`)}>
+                <button
+                  className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm flex gap-2 items-center"
+                  onClick={() =>
+                    setActiveAction(
+                      activeAction === `due-${id}` ? null : `due-${id}`
+                    )
+                  }
+                >
+                  <span className="font-bold text-lg">
+                    <FaRegClock />
+                  </span>
+                  Due date
+                </button>
+                {activeAction === `due-${id}` &&
+                  actionRefs.current[`due-${id}`] && (
+                    <ActionModal
+                      parentRef={actionRefs.current[`due-${id}`]!}
+                      closeModal={() => setActiveAction(null)}
+                    >
+                      <div className="flex flex-col p-2">
+                        <div className="text-center mb-4">
+                          <label htmlFor="" className="font-semibold">
+                            {`⚠`} UNDER CONSTRUCTION {`⚠`}
+                          </label>
+                        </div>
+                        <div className="text-sm flex flex-col px-2">
+                          <span className="italic">
+                            Oops! This feature isn't ready yet, but we're
+                            working on it!
+                          </span>
+                        </div>
+                      </div>
+                    </ActionModal>
+                  )}
+              </div>
+              {/* <button className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm">
                 <BsThreeDotsVertical />
-              </button>
+              </button> */}
+              <div ref={setRef(id)}>
+                <button
+                  className="px-2 py-1 hover:bg-[#aeb6bd] rounded-sm text-lg hover:text-red-500"
+                  onClick={() =>
+                    setActiveAction(activeAction === id ? null : id)
+                  }
+                >
+                  <MdDeleteOutline />
+                </button>
+                {activeAction === id && actionRefs.current[id] && (
+                  <ActionModal
+                    parentRef={actionRefs.current[id]!}
+                    closeModal={() => setActiveAction(null)}
+                  >
+                    <div className="flex flex-col p-2">
+                      <div className="text-center mb-4">
+                        <label htmlFor="">Delete {title}</label>
+                      </div>
+                      <div className="text-sm flex flex-col px-2">
+                        <span>Deleting todo is permanent</span>
+                        <span>Are you sure you want to delete?</span>
+                      </div>
+                      <div className="flex">
+                        <button
+                          className="w-full py-1 bg-red-400 text-black text-sm rounded-sm mt-2"
+                          onClick={() => handleDelete(id)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </ActionModal>
+                )}
+              </div>
             </div>
           </div>
         </div>

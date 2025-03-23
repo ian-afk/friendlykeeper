@@ -13,7 +13,8 @@ export interface WorkstreamProps {
     id: string,
     description: string | undefined | null,
     activity: Activity[] | [],
-    labels: LabelsType[] | []
+    labels: LabelsType[] | [],
+    checklist: Checklist[] | []
   ) => void;
   cardName: string;
   id: string;
