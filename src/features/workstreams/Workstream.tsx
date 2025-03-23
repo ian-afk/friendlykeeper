@@ -7,7 +7,7 @@ import { useList } from "../../context/CoreContext";
 import ButtonEdit from "./components/ButtonEdit";
 import { WorkstreamProps } from "./types/type";
 import { getContrastColor } from "../../utils/globalFunc";
-import { LuListTodo } from "react-icons/lu";
+import ChecklistStream from "./components/ChecklistStream";
 
 export default function Workstream({
   showModal,
@@ -22,16 +22,7 @@ export default function Workstream({
   const [showEdit, setShowEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const activities = activity ? activity.length - 1 : 0;
-  const checklists = list.flatMap((list) => ({
-    ...list,
-    items: list.items.map((item) => ({
-      ...item,
-      checklist: item.checklist.map((check) => ({
-        ...check,
-        checklist: check.checklist.filter((check) => check.done === true),
-      })),
-    })),
-  })).length;
+  const checklists = checklist;
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowEdit(false);
@@ -43,11 +34,11 @@ export default function Workstream({
       e.stopPropagation();
       return;
     }
-    showModal(e, cardName, id, desc, activity, labels);
+    showModal(e, cardName, id, desc, activity, labels, checklist);
   };
 
   const handleOpenTask2 = (e: React.MouseEvent<HTMLElement>) => {
-    showModal(e, cardName, id, desc, activity, labels);
+    showModal(e, cardName, id, desc, activity, labels, checklist);
     setEdit(false);
     setShowEdit(false);
   };
@@ -106,7 +97,7 @@ export default function Workstream({
         )}
 
         {activities !== 0 && (
-          <div className="relative flex gap-2">
+          <div className="relative flex gap-2 items-center">
             <div className="group relative">
               <span className="absolute -bottom-6 left-0 z-10 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                 Backlog
@@ -119,13 +110,17 @@ export default function Workstream({
           </div>
         )}
 
-        {checklists ? (
-          <div className="flex items-center">
-            <LuListTodo />
-            <span>{checklists}</span>
+        {checklists.length !== 0 && (
+          <div className="relative flex gap-2 items-center">
+            <div className="group relative">
+              <span className="absolute -bottom-7 left-0 z-10 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                Todos
+              </span>
+              <span className="flex items-center gap-2 text-sm pointer-events-auto">
+                <ChecklistStream checklist={checklists} />
+              </span>
+            </div>
           </div>
-        ) : (
-          <></>
         )}
       </div>
 
