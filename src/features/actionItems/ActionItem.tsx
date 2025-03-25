@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
-import { FaList, FaRegCircle } from "react-icons/fa";
+import { FaList, FaRegCircle, FaCheck } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
 import { Activity, Checklist, LabelsType } from "../../types/types";
 import Modal from "../../components/Modal";
@@ -21,6 +21,7 @@ type CardInfoType = {
   id: string | undefined;
   cardName: string;
   description?: string | undefined | null;
+  complete: boolean;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
@@ -32,6 +33,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     id: "",
     cardName: "",
     description: "",
+    complete: false,
     activity: [],
     labels: [],
     checklist: [],
@@ -42,6 +44,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
       .flatMap((list) => list.items)
       .find((item) => item.id === id);
     setCardName(listActivity?.cardName ?? "");
+    setComplete(listActivity?.complete ?? false);
     if (listActivity) {
       setCardInfo(listActivity);
     }
@@ -51,6 +54,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     cardInfo.description ?? ""
   );
   const [cardName, setCardName] = useState<string>("");
+  const [complete, setComplete] = useState<boolean>(cardInfo.complete);
   const [editBp, setEditBp] = useState(false); // edit blueprint or card name
   const [addDesc, setAddDesc] = useState(false);
   const [editDesc, setEditDesc] = useState(false);
@@ -78,6 +82,17 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     setEditDesc(false);
   };
 
+  const handleComplete = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setList((prev) =>
+      prev.map((list) => ({
+        ...list,
+        items: list.items.map((item) =>
+          item.id === id ? { ...item, complete: e.target.checked } : item
+        ),
+      }))
+    );
+  };
+
   const handleCancelDesc = () => {
     setAddDesc(false);
     setEditDesc(false);
@@ -103,14 +118,23 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     );
     setEditBp(false);
   };
+
   return (
     <Modal showModal={showModal}>
       <div className="grid grid-cols-10 gap-4">
         <div className="col-span-8">
           <div className="flex items-center gap-2">
-            <button className="text-xl">
-              <FaRegCircle className="text-xl" />
-            </button>
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="hidden peer"
+                checked={complete}
+                onChange={(e) => handleComplete(e)}
+              />
+              <div className="w-6 h-6 border-2 border-gray-500 rounded-full flex items-center justify-center peer-checked:bg-green-500 peer-checked:border-green-500">
+                {complete ? <FaCheck /> : <></>}
+              </div>
+            </label>
             {editBp ? (
               <input
                 type="text"

@@ -30,6 +30,7 @@ export type Item = {
   cardName: string;
   description?: string | undefined | null;
   id: string;
+  complete: boolean;
   labels: LabelsType[] | [];
   activity: Activity[] | [];
   checklist: Checklist[] | [];
@@ -61,6 +62,7 @@ export interface CardInfoType {
   id: string | undefined;
   cardName: string;
   description?: string | undefined | null;
+  complete: boolean;
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];

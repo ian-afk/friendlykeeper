@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { FaRegCircle } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { BsActivity, BsTextLeft } from "react-icons/bs";
 import WorkstreamModal from "./WorkstreamModal";
 import { useList } from "../../context/CoreContext";
@@ -17,12 +17,34 @@ export default function Workstream({
   activity,
   labels,
   checklist,
+  complete,
 }: WorkstreamProps) {
   const { setList, list } = useList();
   const [showEdit, setShowEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const activities = activity ? activity.length - 1 : 0;
   const checklists = checklist;
+
+  const [checked, setChecked] = useState(complete);
+
+  const handleComplete = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(e.target.checked);
+    e.stopPropagation();
+    setList((prev) =>
+      prev.map((list) => ({
+        ...list,
+        items: list.items.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                complete: e.target.checked,
+              }
+            : item
+        ),
+      }))
+    );
+  };
+
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowEdit(false);
@@ -34,11 +56,11 @@ export default function Workstream({
       e.stopPropagation();
       return;
     }
-    showModal(e, cardName, id, desc, activity, labels, checklist);
+    showModal(e, cardName, id, desc, activity, labels, checklist, complete);
   };
 
   const handleOpenTask2 = (e: React.MouseEvent<HTMLElement>) => {
-    showModal(e, cardName, id, desc, activity, labels, checklist);
+    showModal(e, cardName, id, desc, activity, labels, checklist, complete);
     setEdit(false);
     setShowEdit(false);
   };
@@ -76,9 +98,26 @@ export default function Workstream({
       </div>
       {/* TODO add a functionality of the button to have checkmark if done */}
       <div className="flex items-center gap-2">
-        <button>
-          <FaRegCircle />
-        </button>
+        <label
+          className="flex items-center space-x-2 cursor-pointer"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <input
+            type="checkbox"
+            className="hidden peer"
+            checked={checked}
+            onChange={(e) => handleComplete(e)}
+          />
+          <div
+            className="w-5 h-5 border-2 border-gray-500 rounded-full flex items-center justify-center text-[12px]"
+            style={{
+              backgroundColor: complete ? "#57CE6A" : "",
+              border: complete ? "#57CE6A" : "",
+            }}
+          >
+            {complete ? <FaCheck /> : <></>}
+          </div>
+        </label>
         <label>{cardName}</label>
       </div>
 

@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { Activity, CardInfoProps, CardInfoType } from "../../../types/types";
+import { Activity, CardInfoType } from "../../../types/types";
 
 export interface ProgressLogProps {
   id: string;
