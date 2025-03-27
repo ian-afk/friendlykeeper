@@ -5,6 +5,7 @@ import { GoChecklist } from "react-icons/go";
 import Label from "./labels/Label";
 import { LabelsType } from "../../../types/types";
 import Checklist from "./checklist/Checklist";
+import DueDate from "./Dates/DueDate";
 
 type ActionMenuProps = {
   itemId: string;
@@ -45,7 +46,7 @@ const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
       icon: <BiCalendarAlt />,
       fnc: showActionModal,
       show: showDue,
-      children: <></>,
+      children: <DueDate closeCl={setActiveAction} />,
     },
     {
       name: "Start Date",
