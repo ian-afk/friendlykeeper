@@ -5,13 +5,15 @@ import { GoChecklist } from "react-icons/go";
 import Label from "./labels/Label";
 import { LabelsType } from "../../../types/types";
 import Checklist from "./checklist/Checklist";
+import DueDate from "./Dates/DueDate";
 
 type ActionMenuProps = {
   itemId: string;
   labels: LabelsType[] | [];
+  dueDate: string;
 };
 
-const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
+const ActionMenu = ({ itemId, labels, dueDate }: ActionMenuProps) => {
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const actionRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
 
@@ -45,7 +47,9 @@ const ActionMenu = ({ itemId, labels }: ActionMenuProps) => {
       icon: <BiCalendarAlt />,
       fnc: showActionModal,
       show: showDue,
-      children: <></>,
+      children: (
+        <DueDate itemId={itemId} closeCl={setActiveAction} ddDate={dueDate} />
+      ),
     },
     {
       name: "Start Date",
