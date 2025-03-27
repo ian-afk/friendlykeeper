@@ -15,7 +15,9 @@ export interface WorkstreamProps {
     activity: Activity[] | [],
     labels: LabelsType[] | [],
     checklist: Checklist[] | [],
-    complete: boolean
+    complete: boolean,
+    dueDate: string,
+    startDate: string
   ) => void;
   cardName: string;
   id: string;
@@ -24,6 +26,8 @@ export interface WorkstreamProps {
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
   complete: boolean;
+  dueDate: string;
+  startDate: string;
 }
 
 export interface WorkstreamModalProps {

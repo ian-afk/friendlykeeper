@@ -12,9 +12,10 @@ import { useState } from "react";
 interface CalendarProps {
   date: string;
   setDueDate: (date: string) => void;
+  dueDate: string;
 }
 
-export default function Calendar({ date, setDueDate }: CalendarProps) {
+export default function Calendar({ date, setDueDate, dueDate }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState("");
   const today = new Date(date);
   const firstDay = startOfMonth(date);
@@ -38,8 +39,6 @@ export default function Calendar({ date, setDueDate }: CalendarProps) {
     return { date, label: i + 1 };
   });
 
-  const arrLength = format(lastDay, "d");
-
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   const remainingDays = (firstDayIndex + totalDaysInMonth) % 7;
@@ -59,7 +58,6 @@ export default function Calendar({ date, setDueDate }: CalendarProps) {
   const handleDateClick = (date: string) => {
     const ndate = new Date(addDays(date, 1));
     setSelectedDate(format(date, "yyyy-MM-dd"));
-    // console.log("Clicked date:", ndate.toISOString().split("T")[0]);
     setDueDate(ndate.toISOString().split("T")[0]); // YYYY-MM-DD
   };
   return (
@@ -83,6 +81,7 @@ export default function Calendar({ date, setDueDate }: CalendarProps) {
               key={index}
               className={`p-3 flex items-center justify-center rounded-md h-10 cursor-pointer 
               ${isSelected ? "bg-blue-500 text-white" : ""}
+              ${dueDate === formattedDate ? "bg-blue-500 text-white" : ""} 
               ${isCurrentMonth ? "hover:border" : "text-gray-400"}`}
               onClick={() => handleDateClick(String(date))}
             >

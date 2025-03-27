@@ -2,15 +2,24 @@ import { addMonths, addYears, format } from "date-fns";
 import { SetStateAction, useState } from "react";
 
 import Calendar from "./Calendar";
+import { useList } from "../../../../context/CoreContext";
 
 interface DueDateProps {
+  itemId: string;
+  ddDate: string;
   closeCl: React.Dispatch<SetStateAction<string | null>>;
 }
-export default function DueDate({ closeCl }: DueDateProps) {
+export default function DueDate({ itemId, closeCl, ddDate }: DueDateProps) {
+  const { setList } = useList();
   const [currDate, setCurrDate] = useState(
     format(new Date(Date.now()), "MMMM yyyy")
   );
-  const [dueDate, setDueDate] = useState("");
+  const [dueDate, setDueDate] = useState(
+    ddDate ? format(ddDate, "yyyy-MM-dd") : ""
+  );
+  const [time, setTime] = useState(
+    ddDate ? format(ddDate, "hh:mm a") : "0:00 AM"
+  );
 
   const handleChangeDate = (btn: string) => {
     setCurrDate((prev) => {
@@ -26,8 +35,31 @@ export default function DueDate({ closeCl }: DueDateProps) {
   };
 
   const handleSetDueDate = (date: string) => {
-    console.log(date);
     setDueDate(date);
+  };
+
+  const handleSaveDueDate = (date: string, time: string) => {
+    const timeRegex = /^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM|am|pm)$/;
+
+    const formatDate = format(
+      `${date} ${timeRegex.test(time) ? time : "00:00 AM"}`,
+      "MMM dd, yyyy hh:mm a"
+    );
+    setList((prev) =>
+      prev.map((list) => ({
+        ...list,
+        items: list.items.map((item) =>
+          item.id === itemId
+            ? {
+                ...item,
+                dueDate: formatDate,
+              }
+            : item
+        ),
+      }))
+    );
+
+    closeCl(null);
   };
   return (
     <div>
@@ -40,7 +72,11 @@ export default function DueDate({ closeCl }: DueDateProps) {
         <button onClick={() => handleChangeDatePerYear("inc")}>{`>>`}</button>
       </div>
       <div className="p-2">
-        <Calendar date={currDate} setDueDate={handleSetDueDate} />
+        <Calendar
+          date={currDate}
+          setDueDate={handleSetDueDate}
+          dueDate={dueDate}
+        />
       </div>
       <div className="p-4">
         <label htmlFor="due">Due Date</label>
@@ -48,16 +84,22 @@ export default function DueDate({ closeCl }: DueDateProps) {
           <input type="checkbox" />
           <input
             type="text"
-            className="border px-2 py-1 rounded-sm focus:outline-0"
+            className="border px-2 py-1 rounded-sm focus:outline-0 w-24"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
+          />
+          <input
+            type="text"
+            className="border px-2 py-1 rounded-sm focus:outline-0 w-24"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
           />
         </div>
       </div>
       <div className="flex flex-col p-2 gap-2">
         <button
           className="py-1 text-black rounded-sm bg-[#00DCFF] hover:cursor-pointer"
-          onClick={() => closeCl(null)}
+          onClick={() => handleSaveDueDate(dueDate, time)}
         >
           Save
         </button>

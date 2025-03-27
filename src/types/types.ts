@@ -34,6 +34,8 @@ export type Item = {
   labels: LabelsType[] | [];
   activity: Activity[] | [];
   checklist: Checklist[] | [];
+  dueDate: string;
+  startDate: string;
 };
 
 export type ListType = {
@@ -66,6 +68,8 @@ export interface CardInfoType {
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
+  dueDate: string;
+  startDate: string;
 }
 
 export interface CardInfoProps {

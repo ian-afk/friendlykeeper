@@ -18,6 +18,8 @@ export default function Workstream({
   labels,
   checklist,
   complete,
+  dueDate,
+  startDate,
 }: WorkstreamProps) {
   const { setList, list } = useList();
   const [showEdit, setShowEdit] = useState(false);
@@ -56,11 +58,33 @@ export default function Workstream({
       e.stopPropagation();
       return;
     }
-    showModal(e, cardName, id, desc, activity, labels, checklist, complete);
+    showModal(
+      e,
+      cardName,
+      id,
+      desc,
+      activity,
+      labels,
+      checklist,
+      complete,
+      dueDate,
+      startDate
+    );
   };
 
   const handleOpenTask2 = (e: React.MouseEvent<HTMLElement>) => {
-    showModal(e, cardName, id, desc, activity, labels, checklist, complete);
+    showModal(
+      e,
+      cardName,
+      id,
+      desc,
+      activity,
+      labels,
+      checklist,
+      complete,
+      dueDate,
+      startDate
+    );
     setEdit(false);
     setShowEdit(false);
   };
@@ -78,6 +102,7 @@ export default function Workstream({
     >
       {showEdit ? <ButtonEdit edit={handleEdit} /> : <></>}
 
+      {/* LABEL SECTION */}
       <div>
         <ul className="flex flex-wrap space-x-1 space-y-1">
           {labels
@@ -96,7 +121,7 @@ export default function Workstream({
             ))}
         </ul>
       </div>
-      {/* TODO add a functionality of the button to have checkmark if done */}
+      {/* CARD NAME */}
       <div className="flex items-center gap-2">
         <label
           className="flex items-center space-x-2 cursor-pointer"
@@ -121,6 +146,7 @@ export default function Workstream({
         <label>{cardName}</label>
       </div>
 
+      {/* DESCRIPTION section */}
       <div className="flex gap-2">
         {desc && (
           <div className="relative flex gap-2 items-center">

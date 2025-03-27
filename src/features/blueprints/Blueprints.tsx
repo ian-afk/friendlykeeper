@@ -19,6 +19,8 @@ type CardInfo = {
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
+  dueDate: string;
+  startDate: string;
 };
 export default function Blueprint({ listName, items, id }: ListType) {
   const { handleDeleteListCard, setList } = useList();
@@ -33,6 +35,8 @@ export default function Blueprint({ listName, items, id }: ListType) {
     activity: [],
     labels: [],
     checklist: [],
+    dueDate: "",
+    startDate: "",
   });
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -60,7 +64,10 @@ export default function Blueprint({ listName, items, id }: ListType) {
     description: string | undefined | null,
     activity: Activity[] | [],
     labels: LabelsType[] | [],
-    checklist: Checklist[] | []
+    checklist: Checklist[] | [],
+    complete: boolean,
+    dueDate: string,
+    startDate: string
   ) => {
     const target = e.target as HTMLElement | null;
     if (target?.closest("div")) {
@@ -71,6 +78,8 @@ export default function Blueprint({ listName, items, id }: ListType) {
         activity: activity,
         labels: labels,
         checklist: checklist,
+        dueDate,
+        startDate,
       });
       setShowModal(true);
     }
@@ -90,6 +99,8 @@ export default function Blueprint({ listName, items, id }: ListType) {
                   id: crypto.randomUUID(),
                   labels: [],
                   complete: false,
+                  dueDate: "",
+                  startDate: "",
                   checklist: [],
                   activity: [
                     {
@@ -145,6 +156,8 @@ export default function Blueprint({ listName, items, id }: ListType) {
               labels={item.labels}
               checklist={item.checklist}
               complete={item.complete}
+              dueDate={item.dueDate}
+              startDate={item.startDate}
             />
           ))}
         </div>

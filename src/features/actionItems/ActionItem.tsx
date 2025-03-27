@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
-import { FaList, FaRegCircle, FaCheck } from "react-icons/fa";
+import { FaList, FaChevronDown, FaCheck } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
 import { Activity, Checklist, LabelsType } from "../../types/types";
 import Modal from "../../components/Modal";
@@ -25,6 +25,8 @@ type CardInfoType = {
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
+  dueDate: string;
+  startDate: string;
 };
 
 export default function ActionItem({ showModal, id }: ActionItemProps) {
@@ -37,6 +39,8 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     activity: [],
     labels: [],
     checklist: [],
+    dueDate: "",
+    startDate: "",
   });
 
   useEffect(() => {
@@ -154,7 +158,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
             <div className="ml-8 flex flex-wrap">
               {cardInfo.labels ? (
                 <div>
-                  <span>Labels</span>
+                  <label>Labels</label>
                   <ul className="flex text-white space-x-2 space-y-1 flex-wrap">
                     {cardInfo.labels
                       .filter((label) => label.show !== false)
@@ -174,6 +178,31 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
                 </div>
               ) : (
                 <></>
+              )}
+              {/* FOR LATER TODO put dueDates and startDate inside a object DATE */}
+              {(cardInfo.dueDate || cardInfo.startDate) && (
+                <div>
+                  <label>
+                    {cardInfo.dueDate && !cardInfo.startDate
+                      ? "Due date"
+                      : "Start date"}
+                  </label>
+                  <div className="px-2 py-2 bg-gray-500 rounded-md text-white flex items-center gap-2">
+                    <span>{cardInfo.dueDate}</span>
+                    <span
+                      className="px-1 rounded-sm text-sm text-black"
+                      style={{
+                        backgroundColor: complete ? "#57CE6A" : "",
+                        border: complete ? "#57CE6A" : "",
+                      }}
+                    >
+                      {complete ? "Complete" : ""}
+                    </span>
+                    <span className="text-sm">
+                      <FaChevronDown />
+                    </span>
+                  </div>
+                </div>
               )}
             </div>
             {/* DESCRIPTION */}
@@ -235,7 +264,11 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
           </div>
         </div>
         <div className="col-span-2 mt-8">
-          <ActionsMenu itemId={id} labels={cardInfo.labels} />
+          <ActionsMenu
+            itemId={id}
+            labels={cardInfo.labels}
+            dueDate={cardInfo.dueDate}
+          />
         </div>
       </div>
     </Modal>
