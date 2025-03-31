@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
 import { FaList, FaChevronDown, FaCheck } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
-import { Activity, Checklist, LabelsType } from "../../types/types";
+import { CardInfoType } from "../../types/types";
 import Modal from "../../components/Modal";
 import IconHolder from "./components/IconHolder";
 import ButtonSaveCancel from "./components/ButtonSaveCancel";
@@ -12,21 +12,10 @@ import ActionsMenu from "./components/ActionsMenu";
 import { getContrastColor } from "../../utils/globalFunc";
 
 import ActionCheckList from "./components/checklist/ActionCheckList";
+import DateItem from "./components/items/DateItem";
 type ActionItemProps = {
   showModal: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
-};
-
-type CardInfoType = {
-  id: string | undefined;
-  cardName: string;
-  description?: string | undefined | null;
-  complete: boolean;
-  activity: Activity[] | [];
-  labels: LabelsType[] | [];
-  checklist: Checklist[] | [];
-  dueDate: string;
-  startDate: string;
 };
 
 export default function ActionItem({ showModal, id }: ActionItemProps) {
@@ -39,8 +28,16 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
     activity: [],
     labels: [],
     checklist: [],
-    dueDate: "",
-    startDate: "",
+    date: {
+      startDate: {
+        show: false,
+        date: "",
+      },
+      dueDate: {
+        show: false,
+        date: "",
+      },
+    },
   });
 
   useEffect(() => {
@@ -180,29 +177,13 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
                 <></>
               )}
               {/* FOR LATER TODO put dueDates and startDate inside a object DATE */}
-              {(cardInfo.dueDate || cardInfo.startDate) && (
-                <div>
-                  <label>
-                    {cardInfo.dueDate && !cardInfo.startDate
-                      ? "Due date"
-                      : "Start date"}
-                  </label>
-                  <div className="px-2 py-2 bg-gray-500 rounded-md text-white flex items-center gap-2">
-                    <span>{cardInfo.dueDate}</span>
-                    <span
-                      className="px-1 rounded-sm text-sm text-black"
-                      style={{
-                        backgroundColor: complete ? "#57CE6A" : "",
-                        border: complete ? "#57CE6A" : "",
-                      }}
-                    >
-                      {complete ? "Complete" : ""}
-                    </span>
-                    <span className="text-sm">
-                      <FaChevronDown />
-                    </span>
-                  </div>
-                </div>
+              {((cardInfo.date && cardInfo.date.dueDate?.show) ||
+                cardInfo.date?.startDate?.show) && (
+                <DateItem
+                  complete={complete}
+                  date={cardInfo.date}
+                  label="Dates"
+                />
               )}
             </div>
             {/* DESCRIPTION */}
@@ -267,7 +248,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
           <ActionsMenu
             itemId={id}
             labels={cardInfo.labels}
-            dueDate={cardInfo.dueDate}
+            date={cardInfo.date}
           />
         </div>
       </div>

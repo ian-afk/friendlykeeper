@@ -3,17 +3,21 @@ import ActionModal from "./ActionModal";
 import { BiCalendarAlt, BiLabel } from "react-icons/bi";
 import { GoChecklist } from "react-icons/go";
 import Label from "./labels/Label";
-import { LabelsType } from "../../../types/types";
+import { DateType, LabelsType } from "../../../types/types";
 import Checklist from "./checklist/Checklist";
 import DueDate from "./Dates/DueDate";
+import StartDate from "./Dates/StartDate";
 
 type ActionMenuProps = {
   itemId: string;
   labels: LabelsType[] | [];
-  dueDate: string;
+  date: {
+    startDate: DateType;
+    dueDate: DateType;
+  };
 };
 
-const ActionMenu = ({ itemId, labels, dueDate }: ActionMenuProps) => {
+const ActionMenu = ({ itemId, labels, date }: ActionMenuProps) => {
   const [activeAction, setActiveAction] = useState<string | null>(null);
   const actionRefs = useRef<{ [key: string]: HTMLLIElement | null }>({});
 
@@ -48,7 +52,11 @@ const ActionMenu = ({ itemId, labels, dueDate }: ActionMenuProps) => {
       fnc: showActionModal,
       show: showDue,
       children: (
-        <DueDate itemId={itemId} closeCl={setActiveAction} ddDate={dueDate} />
+        <DueDate
+          itemId={itemId}
+          closeCl={setActiveAction}
+          ddDate={date?.dueDate}
+        />
       ),
     },
     {
@@ -57,7 +65,13 @@ const ActionMenu = ({ itemId, labels, dueDate }: ActionMenuProps) => {
       icon: <BiCalendarAlt />,
       fnc: showActionModal,
       show: showStart,
-      children: <></>,
+      children: (
+        <StartDate
+          itemId={itemId}
+          closeCl={setActiveAction}
+          sdDate={date?.startDate}
+        />
+      ),
     },
   ];
 
