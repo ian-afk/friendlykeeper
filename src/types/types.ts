@@ -26,6 +26,10 @@ export type Checklist = {
   checklist: ChecklistItem[] | [];
 };
 
+export type DateType = {
+  show: boolean;
+  date: string;
+};
 export type Item = {
   cardName: string;
   description?: string | undefined | null;
@@ -34,8 +38,10 @@ export type Item = {
   labels: LabelsType[] | [];
   activity: Activity[] | [];
   checklist: Checklist[] | [];
-  dueDate: string;
-  startDate: string;
+  date: {
+    dueDate: DateType;
+    startDate: DateType;
+  };
 };
 
 export type ListType = {
@@ -68,8 +74,10 @@ export interface CardInfoType {
   activity: Activity[] | [];
   labels: LabelsType[] | [];
   checklist: Checklist[] | [];
-  dueDate: string;
-  startDate: string;
+  date: {
+    startDate: DateType;
+    dueDate: DateType;
+  };
 }
 
 export interface CardInfoProps {
