@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsTextLeft } from "react-icons/bs";
-import { FaList, FaChevronDown, FaCheck } from "react-icons/fa";
+import { FaList, FaCheck } from "react-icons/fa";
 import { useList } from "../../context/CoreContext";
 import { CardInfoType } from "../../types/types";
 import Modal from "../../components/Modal";
@@ -179,11 +179,7 @@ export default function ActionItem({ showModal, id }: ActionItemProps) {
               {/* FOR LATER TODO put dueDates and startDate inside a object DATE */}
               {((cardInfo.date && cardInfo.date.dueDate?.show) ||
                 cardInfo.date?.startDate?.show) && (
-                <DateItem
-                  complete={complete}
-                  date={cardInfo.date}
-                  label="Dates"
-                />
+                <DateItem complete={complete} date={cardInfo.date} />
               )}
             </div>
             {/* DESCRIPTION */}

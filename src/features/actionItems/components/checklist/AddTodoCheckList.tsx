@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import TextArea from "../../../../components/forms/TextArea";
 import ButtonSave from "../../../../components/buttons/ButtonSave";
 import { useList } from "../../../../context/CoreContext";

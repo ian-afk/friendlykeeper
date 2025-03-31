@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useList } from "../../../../context/CoreContext";
 import LabelNew from "./LabelNew";
 import { LabelsType } from "../../../../types/types";
 import LabelItems from "./LabelItems";
@@ -17,7 +16,6 @@ type EditLabel = {
 };
 
 export default function Label({ itemId, labels }: LabelProps) {
-  const { setList } = useList();
   const [label, setLabel] = useState<EditLabel>({
     id: "",
     label: "",
@@ -36,7 +34,7 @@ export default function Label({ itemId, labels }: LabelProps) {
   return (
     <div>
       {editLabel ? (
-        <LabelEdit itemId={itemId} setEdit={setEditLabel} editLabel={label} />
+        <LabelEdit setEdit={setEditLabel} editLabel={label} />
       ) : (
         <>
           {newLabel ? (
