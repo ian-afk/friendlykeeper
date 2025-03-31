@@ -35,18 +35,17 @@ const DragScrollContainer = ({ children }: DragScrollContainerProps) => {
   return (
     <div
       ref={containerRef}
-      className="overflow-x-scroll whitespace-nowrap"
+      className="overflow-x-scroll overflow-y-scroll whitespace-nowrap flex justify-start"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp} // Stops dragging if mouse leaves the div
+      onMouseLeave={handleMouseUp}
       style={{
         display: "flex",
         gap: "24px",
-        width: "97vw",
+        width: "100vw",
         height: "90vh",
-        scrollbarWidth: "thin",
-        scrollbarColor: "#ccc transparent",
+        padding: "0 8px",
       }}
     >
       {children}
