@@ -2,6 +2,7 @@ import { SetStateAction } from "react";
 import {
   Activity,
   Checklist,
+  DateType,
   LabelsType,
   ListType,
 } from "../../../types/types";
@@ -30,6 +31,10 @@ export interface WorkstreamProps {
   complete: boolean;
   dueDate: string;
   startDate: string;
+  date: {
+    dueDate: DateType;
+    startDate: DateType;
+  };
 }
 
 export interface WorkstreamModalProps {

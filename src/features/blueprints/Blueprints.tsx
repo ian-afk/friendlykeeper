@@ -178,6 +178,7 @@ export default function Blueprint({ listName, items, id }: ListType) {
               complete={item.complete}
               dueDate={item?.date?.dueDate?.date}
               startDate={item?.date?.startDate?.date}
+              date={item?.date}
             />
           ))}
         </div>

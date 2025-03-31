@@ -19,7 +19,7 @@ export default function Calendar({ date, setDueDate, dueDate }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState("");
   const today = new Date(date);
   const firstDay = startOfMonth(date);
-  const lastDay = endOfMonth(date);
+  // const lastDay = endOfMonth(date);
   const firstDayIndex = getDay(firstDay);
 
   const prevMonthLastDay = endOfMonth(subMonths(today, 1));

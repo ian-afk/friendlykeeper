@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { LuClock } from "react-icons/lu";
 import { FaCheck } from "react-icons/fa";
 import { BsActivity, BsTextLeft } from "react-icons/bs";
 import WorkstreamModal from "./WorkstreamModal";
@@ -8,6 +8,7 @@ import ButtonEdit from "./components/ButtonEdit";
 import { WorkstreamProps } from "./types/type";
 import { getContrastColor } from "../../utils/globalFunc";
 import ChecklistStream from "./components/ChecklistStream";
+import { format, isToday, isValid, parse } from "date-fns";
 
 export default function Workstream({
   showModal,
@@ -20,6 +21,7 @@ export default function Workstream({
   complete,
   dueDate,
   startDate,
+  date,
 }: WorkstreamProps) {
   const { setList, list } = useList();
   const [showEdit, setShowEdit] = useState(false);
@@ -29,6 +31,22 @@ export default function Workstream({
 
   const [checked, setChecked] = useState(complete);
 
+  const bothDate = date?.dueDate?.show && date?.startDate?.show;
+  const showStart = date?.startDate.show;
+  const showDue = date?.dueDate.show;
+  const currDate = new Date();
+
+  const dueRaw = date?.dueDate?.date;
+  const startRaw = date?.startDate?.date;
+
+  const due = dueRaw
+    ? parse(dueRaw, "MMM dd, yyyy hh:mm a", new Date())
+    : currDate;
+  const start = startRaw
+    ? parse(startRaw, "MMM dd, yyyy hh:mm a", new Date())
+    : currDate;
+
+  const isDueSoon = isValid(due) && isToday(due) && currDate < due;
   const handleComplete = (e: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(e.target.checked);
     e.stopPropagation();
@@ -122,7 +140,7 @@ export default function Workstream({
         </ul>
       </div>
       {/* CARD NAME */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 text-white">
         <label
           className="flex items-center space-x-2 cursor-pointer"
           onClick={(e) => e.stopPropagation()}
@@ -147,7 +165,34 @@ export default function Workstream({
       </div>
 
       {/* DESCRIPTION section */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
+        {bothDate ? (
+          <div
+            className="flex items-center text-sm space-x-2 px-1 rounded-sm text-white mt-1"
+            style={{
+              backgroundColor: complete
+                ? "#57CE6A"
+                : currDate >= due
+                ? "#d33b3b"
+                : isDueSoon
+                ? "#f0B000"
+                : "",
+              border: complete ? "#57CE6A" : "",
+            }}
+          >
+            <span>
+              <LuClock />
+            </span>
+            <span>{`${format(startDate, "MMM dd")} - ${format(
+              dueDate,
+              "MMM dd"
+            )}`}</span>
+          </div>
+        ) : start ? (
+          <></>
+        ) : (
+          <></>
+        )}
         {desc && (
           <div className="relative flex gap-2 items-center">
             <div className="group relative">
