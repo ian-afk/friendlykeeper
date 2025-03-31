@@ -17,7 +17,9 @@ export interface WorkstreamProps {
     checklist: Checklist[] | [],
     complete: boolean,
     dueDate: string,
-    startDate: string
+    startDate: string,
+    showDue?: boolean,
+    showStart?: boolean
   ) => void;
   cardName: string;
   id: string;

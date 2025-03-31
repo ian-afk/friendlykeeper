@@ -67,7 +67,7 @@ export interface UpdatedActType {
 }
 
 export interface CardInfoType {
-  id: string | undefined;
+  id: string;
   cardName: string;
   description?: string | undefined | null;
   complete: boolean;

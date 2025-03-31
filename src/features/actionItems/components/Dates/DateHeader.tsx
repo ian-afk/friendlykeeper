@@ -4,9 +4,14 @@ import { SetStateAction } from "react";
 interface DateHeaderProps {
   setCurrDate: React.Dispatch<SetStateAction<string>>;
   currDate: string;
+  label: string;
 }
 
-export default function DateHeader({ setCurrDate, currDate }: DateHeaderProps) {
+export default function DateHeader({
+  setCurrDate,
+  currDate,
+  label,
+}: DateHeaderProps) {
   const handleChangeDate = (btn: string) => {
     setCurrDate((prev) => {
       if (btn === "dec") return format(addMonths(prev, -1), "MMMM yyyy");
@@ -21,7 +26,7 @@ export default function DateHeader({ setCurrDate, currDate }: DateHeaderProps) {
   };
   return (
     <>
-      <div className="text-center p-2">Start Date</div>
+      <div className="text-center p-2">{label}</div>
       <div className="p-4 flex justify-between">
         <button onClick={() => handleChangeDatePerYear("dec")}>{`<<`}</button>
         <button onClick={() => handleChangeDate("dec")}>{`<`}</button>
