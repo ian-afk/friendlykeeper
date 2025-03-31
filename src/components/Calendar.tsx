@@ -11,11 +11,11 @@ import { useState } from "react";
 
 interface CalendarProps {
   date: string;
-  setDueDate: (date: string) => void;
-  dueDate: string;
+  setDate: (date: string) => void;
+  sdDate: string;
 }
 
-export default function Calendar({ date, setDueDate, dueDate }: CalendarProps) {
+export default function Calendar({ date, setDate, sdDate }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState("");
   const today = new Date(date);
   const firstDay = startOfMonth(date);
@@ -58,7 +58,7 @@ export default function Calendar({ date, setDueDate, dueDate }: CalendarProps) {
   const handleDateClick = (date: string) => {
     const ndate = new Date(addDays(date, 1));
     setSelectedDate(format(date, "yyyy-MM-dd"));
-    setDueDate(ndate.toISOString().split("T")[0]); // YYYY-MM-DD
+    setDate(ndate.toISOString().split("T")[0]); // YYYY-MM-DD
   };
   return (
     <div>
@@ -81,7 +81,7 @@ export default function Calendar({ date, setDueDate, dueDate }: CalendarProps) {
               key={index}
               className={`p-3 flex items-center justify-center rounded-md h-10 cursor-pointer 
               ${isSelected ? "bg-blue-500 text-white" : ""}
-              ${dueDate === formattedDate ? "bg-blue-500 text-white" : ""} 
+              ${sdDate === formattedDate ? "bg-blue-500 text-white" : ""} 
               ${isCurrentMonth ? "hover:border" : "text-gray-400"}`}
               onClick={() => handleDateClick(String(date))}
             >

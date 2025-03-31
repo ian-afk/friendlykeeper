@@ -1,4 +1,10 @@
-import { Activity, Checklist, LabelsType, ListType } from "../../types/types";
+import {
+  Activity,
+  CardInfoType,
+  Checklist,
+  LabelsType,
+  ListType,
+} from "../../types/types";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -12,31 +18,30 @@ import ButtonMenu from "./components/ButtonMenu";
 import ButtonAdd from "./components/ButtonAdd";
 import ActionItem from "../actionItems/ActionItem";
 
-type CardInfo = {
-  id: string;
-  cName: string;
-  description: string | undefined | null;
-  activity: Activity[] | [];
-  labels: LabelsType[] | [];
-  checklist: Checklist[] | [];
-  dueDate: string;
-  startDate: string;
-};
 export default function Blueprint({ listName, items, id }: ListType) {
   const { handleDeleteListCard, setList } = useList();
   const [addNew, setAddNew] = useState(false);
   const [menu, setMenu] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [cardInfo, setCardInfo] = useState<CardInfo>({
+  const [cardInfo, setCardInfo] = useState<CardInfoType>({
     id: "",
-    cName: "",
+    cardName: "",
     description: "",
     activity: [],
     labels: [],
     checklist: [],
-    dueDate: "",
-    startDate: "",
+    complete: false,
+    date: {
+      startDate: {
+        date: "",
+        show: false,
+      },
+      dueDate: {
+        date: "",
+        show: false,
+      },
+    },
   });
 
   const divRef = useRef<HTMLDivElement>(null);
@@ -67,19 +72,30 @@ export default function Blueprint({ listName, items, id }: ListType) {
     checklist: Checklist[] | [],
     complete: boolean,
     dueDate: string,
-    startDate: string
+    startDate: string,
+    showDue?: boolean,
+    showStart?: boolean
   ) => {
     const target = e.target as HTMLElement | null;
     if (target?.closest("div")) {
       setCardInfo({
-        cName: cdName,
+        cardName: cdName,
         id,
         description,
         activity: activity,
         labels: labels,
         checklist: checklist,
-        dueDate,
-        startDate,
+        complete,
+        date: {
+          dueDate: {
+            date: dueDate,
+            show: showDue ?? false,
+          },
+          startDate: {
+            date: startDate,
+            show: showStart ?? false,
+          },
+        },
       });
       setShowModal(true);
     }
@@ -102,6 +118,10 @@ export default function Blueprint({ listName, items, id }: ListType) {
                   dueDate: "",
                   startDate: "",
                   checklist: [],
+                  date: {
+                    startDate: { date: "", show: false },
+                    dueDate: { date: "", show: false },
+                  },
                   activity: [
                     {
                       id: crypto.randomUUID(),
@@ -156,8 +176,9 @@ export default function Blueprint({ listName, items, id }: ListType) {
               labels={item.labels}
               checklist={item.checklist}
               complete={item.complete}
-              dueDate={item.dueDate}
-              startDate={item.startDate}
+              dueDate={item?.date?.dueDate?.date}
+              startDate={item?.date?.startDate?.date}
+              date={item?.date}
             />
           ))}
         </div>

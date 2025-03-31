@@ -5,9 +5,9 @@ import Board from "./pages/BoardPage";
 function App() {
   return (
     <>
-      <div className="m-4">
+      <div>
         <Navbar />
-        <div className="mt-24">
+        <div className="mt-20">
           <Board />
         </div>
       </div>

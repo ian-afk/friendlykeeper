@@ -153,7 +153,7 @@ export default function CheckTodoItem({
                           </label>
                         </div>
                         <div className="text-sm flex flex-col px-2">
-                          <span className="italic">
+                          <span className="italic text-wrap">
                             Oops! This feature isn't ready yet, but we're
                             working on it!
                           </span>
