@@ -16,7 +16,7 @@ interface DueDateProps {
 export default function DueDate({ itemId, closeCl, ddDate }: DueDateProps) {
   const { setList } = useList();
   const [currMonth, setCurrMonth] = useState(
-    format(new Date(Date.now()), "MMMM yyyy")
+    format(new Date(ddDate.date), "MMMM yyyy")
   );
   const [dueDate, setDueDate] = useState(
     ddDate?.date ? format(ddDate.date, "yyyy-MM-dd") : ""
@@ -25,18 +25,6 @@ export default function DueDate({ itemId, closeCl, ddDate }: DueDateProps) {
     ddDate?.date ? format(ddDate.date, "hh:mm a") : "0:00 AM"
   );
   const [showDate, setShowDate] = useState(ddDate?.show);
-  //   const handleChangeDate = (btn: string) => {
-  //     setCurrMonth((prev) => {
-  //       if (btn === "dec") return format(addMonths(prev, -1), "MMMM yyyy");
-  //       else return format(addMonths(prev, 1), "MMMM yyyy");
-  //     });
-  //   };
-  //   const handleChangeDatePerYear = (btn: string) => {
-  //     setCurrMonth((prev) => {
-  //       if (btn === "dec") return format(addYears(prev, -1), "MMMM yyyy");
-  //       else return format(addYears(prev, 1), "MMMM yyyy");
-  //     });
-  //   };
 
   const handleSetDueDate = (date: string) => {
     setDueDate(date);
