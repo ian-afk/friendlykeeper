@@ -10,15 +10,10 @@ type EditLabel = {
 
 interface LabelEditProps {
   setEdit: React.Dispatch<SetStateAction<boolean>>;
-  itemId: string;
   editLabel: EditLabel;
 }
 
-export default function LabelEdit({
-  setEdit,
-  itemId,
-  editLabel,
-}: LabelEditProps) {
+export default function LabelEdit({ setEdit, editLabel }: LabelEditProps) {
   const { setList } = useList();
   const [color, setColor] = useState(editLabel.color);
   const [title, setTitle] = useState(editLabel.label);

@@ -23,7 +23,7 @@ export default function Workstream({
   startDate,
   date,
 }: WorkstreamProps) {
-  const { setList, list } = useList();
+  const { setList } = useList();
   const [showEdit, setShowEdit] = useState(false);
   const [edit, setEdit] = useState(false);
   const activities = activity ? activity.length - 1 : 0;
@@ -32,8 +32,6 @@ export default function Workstream({
   const [checked, setChecked] = useState(complete);
 
   const bothDate = date?.dueDate?.show && date?.startDate?.show;
-  const showStart = date?.startDate.show;
-  const showDue = date?.dueDate.show;
   const currDate = new Date();
 
   const dueRaw = date?.dueDate?.date;

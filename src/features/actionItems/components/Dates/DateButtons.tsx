@@ -1,5 +1,3 @@
-import React from "react";
-
 interface DateButtonsProps {
   remove: () => void;
   handleSaveDate: () => void;

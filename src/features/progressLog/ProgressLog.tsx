@@ -19,7 +19,6 @@ export default function ProgressLog({
 
   const [addActivity, setAddActivity] = useState(false);
 
-  const [editActivity, setEditActivity] = useState(false);
   const handleSaveActivity = () => {
     let updatedActivity: UpdatedActType[] = [];
     const date = new Date(Date.now());
@@ -50,7 +49,6 @@ export default function ProgressLog({
 
     setCardInfo((prev) => ({ ...prev, activity: updatedActivity }));
     setAddActivity(false);
-    setEditActivity(false);
     setActivity("");
   };
 
