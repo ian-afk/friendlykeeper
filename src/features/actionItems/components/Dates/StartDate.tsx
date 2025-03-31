@@ -29,7 +29,7 @@ export default function StartDate({ sdDate, closeCl, itemId }: StartDateProps) {
     sdDate?.date ? format(sdDate?.date, "hh:mm a") : "0:00 AM"
   );
 
-  const [showDate, setShowDate] = useState(sdDate.show);
+  const [showDate, setShowDate] = useState(sdDate?.show);
   const handleSetStartDate = (date: string) => {
     setStartDate(date);
   };
@@ -100,7 +100,11 @@ export default function StartDate({ sdDate, closeCl, itemId }: StartDateProps) {
   };
   return (
     <div>
-      <DateHeader currDate={currMonth} setCurrDate={setCurrMonth} />
+      <DateHeader
+        currDate={currMonth}
+        setCurrDate={setCurrMonth}
+        label="Start Date"
+      />
       <div className="p-2">
         <Calendar
           date={currMonth}
