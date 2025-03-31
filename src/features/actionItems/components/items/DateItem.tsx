@@ -4,13 +4,12 @@ import { DateType } from "../../../../types/types";
 
 interface DateItemProps {
   complete: boolean;
-  label: string;
   date: {
     dueDate: DateType | undefined;
     startDate: DateType | undefined;
   };
 }
-export default function DateItem({ date, complete, label }: DateItemProps) {
+export default function DateItem({ date, complete }: DateItemProps) {
   const currDate = new Date();
 
   const dueRaw = date?.dueDate?.date;

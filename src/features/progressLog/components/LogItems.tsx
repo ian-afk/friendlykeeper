@@ -1,11 +1,10 @@
 import { SetStateAction, useState } from "react";
 import ButtonEditDel from "./ButtonEditDel";
 import UserIcon from "../../../components/UserIcon";
-import AddNewForm from "../../../components/AddNewForm";
 import TextArea from "../../../components/forms/TextArea";
 import ButtonSave from "../../../components/buttons/ButtonSave";
 import { useList } from "../../../context/CoreContext";
-import { CardInfoProps, CardInfoType } from "../../../types/types";
+import { CardInfoType } from "../../../types/types";
 
 interface LogItemsProps {
   date: string;

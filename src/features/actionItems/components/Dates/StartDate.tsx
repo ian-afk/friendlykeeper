@@ -34,10 +34,7 @@ export default function StartDate({ sdDate, closeCl, itemId }: StartDateProps) {
     setStartDate(date);
   };
 
-  const [remove, setRemove] = useState(false);
-  const handleClose = () => {
-    closeCl(null);
-  };
+  // const [remove, setRemove] = useState(false);
 
   const handleSaveStartDate = () => {
     if (startDate === null || startDate === "") {
@@ -73,9 +70,9 @@ export default function StartDate({ sdDate, closeCl, itemId }: StartDateProps) {
     closeCl(null);
   };
 
-  const handleRemove = () => {
-    setRemove(!remove);
-  };
+  // const handleRemove = () => {
+  //   setRemove(!remove);
+  // };
   const handleDeleteStartDate = () => {
     setList((prev) =>
       prev.map((list) => ({

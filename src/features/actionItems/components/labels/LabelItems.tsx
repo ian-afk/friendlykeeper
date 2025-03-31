@@ -1,13 +1,7 @@
 import { BsPencil } from "react-icons/bs";
 import { useList } from "../../../../context/CoreContext";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { getContrastColor } from "../../../../utils/globalFunc";
-
-type EditLabel = {
-  id: string;
-  label: string;
-  color: string;
-};
 
 interface LabelItemsProps {
   id: string;
@@ -39,7 +33,7 @@ export default function LabelItems({
             if (label.id === id) {
               return {
                 ...label,
-                show: e.target.checked,
+                show: check,
               };
             }
             return label;
